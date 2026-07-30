@@ -8,7 +8,7 @@ import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 export const metadata = pageMeta({
   title: 'Insights — RECD compliance, execution and cost',
   description:
-    'Technical notes on retrofit emission control for diesel generators: the compliance guide, what happens during commissioning, and what actually drives RECD cost of ownership.',
+    'Technical notes on retrofit emission control for diesel generators: the compliance guide, commissioning walkthrough, and what drives RECD cost.',
   path: '/insights/',
 })
 
@@ -31,8 +31,12 @@ export default function InsightsPage() {
         breadcrumbs={crumbs}
       />
 
-      <section className="section">
+      <section className="section" aria-labelledby="all-insights">
         <div className="shell">
+          {/* The cards are h3. Without this the document jumps h1 → h3. */}
+          <h2 id="all-insights" className="sr-only">
+            All technical notes
+          </h2>
           <InsightCards insights={insights} />
         </div>
       </section>

@@ -13,9 +13,9 @@ import { capabilities, handoverPack, servicesIntro, stages } from '@/content/ser
 import { breadcrumbSchema, pageMeta, serviceSchema } from '@/lib/seo'
 
 export const metadata = pageMeta({
-  title: 'Installation, Testing & Commissioning (SITC) for RECD',
+  title: 'RECD Installation, Testing & Commissioning',
   description:
-    'Turnkey RECD installation, testing, commissioning and AMC for diesel generators. Site survey, back-pressure calculation, mechanical erection, verification under load and a documented compliance handover.',
+    'Turnkey RECD installation, testing, commissioning and AMC for diesel generators — site survey to a documented compliance handover.',
   path: '/services/',
 })
 

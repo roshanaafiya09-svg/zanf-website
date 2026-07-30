@@ -33,8 +33,12 @@ export default function ProjectsPage() {
         breadcrumbs={crumbs}
       />
 
-      <section className="section">
+      <section className="section" aria-labelledby="all-projects">
         <div className="shell">
+          {/* The cards are h3. Without this the document jumps h1 → h3. */}
+          <h2 id="all-projects" className="sr-only">
+            All installations
+          </h2>
           {published.length === 0 && (
             <div className="mb-10 rounded-[8px] border border-steel-200 bg-white p-7">
               <p className="mono text-[0.6875rem] uppercase tracking-[0.14em] text-[var(--signal-ink)]">

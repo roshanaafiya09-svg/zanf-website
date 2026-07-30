@@ -3,9 +3,9 @@ import { amcPage } from '@/content/services'
 import { pageMeta } from '@/lib/seo'
 
 export const metadata = pageMeta({
-  title: 'RECD & DG set AMC and post-installation support',
+  title: 'RECD & DG set AMC and support',
   description:
-    'Periodic inspection against the commissioning baseline, catalyst health checks, OBD verification and combined diesel generator plus RECD maintenance under one contract.',
+    'Periodic inspection against the commissioning baseline, catalyst health checks, and generator plus RECD maintenance under one contract.',
   path: '/services/amc/',
 })
 

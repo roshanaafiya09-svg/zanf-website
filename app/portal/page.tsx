@@ -7,7 +7,7 @@ import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 
 export const metadata = {
   ...pageMeta({
-    title: 'ZAN-F Client Portal — RECD Tracker',
+    title: 'Client Portal — RECD Tracker',
     description:
       'Track installation status, compliance documents, RECD health and service history from one dashboard. In development.',
     path: '/portal/',

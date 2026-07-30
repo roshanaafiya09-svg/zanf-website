@@ -108,6 +108,59 @@ is the field that makes the second business line measurable.
 
 ---
 
+## The logo
+
+`Zanf Logo HD.png` is now on the site, at the top of the homepage hero.
+
+**What the file actually is.** Not a logo asset — a presentation render. The mark
+is 3D brushed-metal lettering photographed on a dark textured panel, 1691 × 608,
+with bevels, drop shadows and a lighting gradient baked into the pixels. There is
+no vector and no usable alpha.
+
+**Two things were tried and rejected**, both recorded in
+`scripts/prepare-brand-logo.mjs`:
+
+- *Keying the panel out to transparency.* Fails, and not for want of tuning: the
+  letter extrusions are near-black, and saturation is meaningless at that
+  luminance, so drop shadows survive the key at full opacity while the panel
+  leaks through as a translucent veil. 37% of pixels ended up at partial alpha.
+  There is no threshold that separates "dark panel" from "dark bevel" — they are
+  the same pixels.
+- *Patching out the four-point sparkle* in the bottom-right corner. The sparkle
+  overlaps the right margin of "SYSTEMS", so cropping it clips the final letter,
+  and a colour-sampled patch leaves a visible rectangle against the panel's
+  gradient. The artwork therefore ships unmodified apart from being resized to
+  1200px wide. At display size the sparkle reads as a highlight on a photographed
+  plate.
+
+**So it is used only on carbon**, presented as a *mounted plate* with a hairline
+and an 8px corner — which suits a site whose entire type treatment is equipment
+lettering. It is the first thing in the hero, above the eyebrow: 240px wide on a
+phone, 336px on desktop, served as a 15 KB AVIF.
+
+**The header and footer keep the typographic wordmark.** A dark plate at 40px on
+the light header would read as a sticker and the strapline would be illegible.
+The footer now carries "Power Systems" beneath the wordmark in the logo's own
+blue (7.95:1 on carbon), which is the one place that colour is echoed.
+
+**Brand colours recovered from the artwork** — sampled from the letter faces
+only, so bevels and shadows do not skew the average:
+
+| | Recovered | Site token |
+|---|---|---|
+| Green | `#1F8F57` | `--emission-500: #0E8A5F` |
+| Blue | `#1D6B96` | added as `--brand-blue` |
+
+The green came back within a hair of the palette the brief specified — useful
+confirmation that Precision Air is already ZAN-F's brand green rather than an
+imposition. The blue is available as a token but is deliberately not a third
+general-purpose accent.
+
+**Still needed: a flat SVG of the mark.** That is the only thing that puts the
+real logo into the light header, gives the OG card and the favicon the actual
+monogram instead of a set "Z", and gives Google a logo on a transparent
+background for the knowledge panel.
+
 ## Audit pass
 
 A post-build audit found and fixed four things worth recording:
@@ -138,12 +191,29 @@ their field with `aria-describedby`, and the submit outcome sits in a live
 region, so a screen-reader user hears why a field is invalid rather than only
 that it is.
 
-Known and not yet fixed, in priority order: page titles run 93–122 characters
-and will truncate in search results (the `{Page} | ZAN-F — Authorized Platino
-RECD Dealer & SITC Partner` pattern is the cause — shortening the suffix to
-`| ZAN-F` fixes it); seven meta descriptions exceed ~155 characters; `/projects/`
-and `/insights/` jump from `h1` to `h3`; `Product.offers` carries no price and
-`Organization` no logo, which Search Console will flag as warnings.
+A second pass then cleared the medium findings:
+
+- **Titles.** Every page was 93–122 characters, all truncated by Google at
+  roughly 60. The title template is now `{Page} | ZAN-F` and the page titles
+  themselves were shortened. Measured across all 17 routes: **none over 60**.
+  The positioning line stays in full on the homepage, which is the title that
+  ranks for the brand — and it was itself trimmed to
+  "Authorized Platino RECD Dealer & SITC Partner" to land at 53 characters.
+- **Descriptions.** Fourteen were over the ~155-character truncation point.
+  Measured across all 17 routes: **none over 155**.
+- **Heading order.** `/projects/`, `/insights/` and `/products/` all jumped
+  `h1 → h3` because the card headings had no section heading above them. Each
+  now has a screen-reader-only `h2` and an `aria-labelledby` on its section.
+  Measured: **no jumps on any page**.
+- **Structured data.** `Organization` and `LocalBusiness` now carry a logo and
+  image. `Product.offers` was removed rather than filled in: an Offer with no
+  price is a Search Console *error*, while a Product with no offers is only a
+  warning, and neither is eligible for a rich result — so the honest one wins.
+
+Remaining known gaps: no analytics, so there is no way to see which of the four
+conversion entry points works; the Google Maps iframe loads third-party content
+with no consent gate (fine for Indian traffic, a GDPR problem for EU visitors);
+and the explainer video has burned-in labels and no transcript.
 
 ## Needed from ZAN-F
 

@@ -24,7 +24,24 @@ export default function Hero() {
 
       <div className="shell relative grid items-center gap-12 py-14 md:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-24">
         <div>
-          <Eyebrow className="rise" >{hero.eyebrow}</Eyebrow>
+          {/* The lock-up, mounted as a plate.
+              The supplied artwork is a render on its own dark panel, so it is
+              given a hairline and a corner and allowed to be a plate — which
+              suits a site whose whole type treatment is equipment lettering.
+              Pretending it floats would only draw attention to the panel edge. */}
+          <div className="rise mb-8 w-[15rem] overflow-hidden rounded-[6px] border border-hairline-dark-strong sm:w-[19rem] lg:w-[21rem]">
+            <Image
+              src={media.logoPlate.src}
+              alt={media.logoPlate.alt}
+              width={media.logoPlate.width}
+              height={media.logoPlate.height}
+              priority
+              sizes="(min-width: 1024px) 336px, (min-width: 640px) 304px, 240px"
+              className="h-auto w-full"
+            />
+          </div>
+
+          <Eyebrow className="rise">{hero.eyebrow}</Eyebrow>
 
           <h1 className="display mt-6 text-[2.35rem] sm:text-[3.1rem] lg:text-[3.9rem]">
             {hero.headline.map((line, i) => (

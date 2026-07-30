@@ -5,7 +5,7 @@ import { pageMeta } from '@/lib/seo'
 export const metadata = pageMeta({
   title: 'RECD installation for diesel generators',
   description:
-    'Site survey, back-pressure calculation, RECD sizing, mechanical erection, exhaust integration, insulation and OBD wiring. Typically one to three days per DG set.',
+    'Site survey, back-pressure calculation, RECD sizing, mechanical erection, exhaust integration and OBD wiring — one to three days per DG set.',
   path: '/services/installation/',
 })
 

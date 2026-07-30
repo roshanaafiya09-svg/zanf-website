@@ -5,7 +5,7 @@ import { pageMeta } from '@/lib/seo'
 export const metadata = pageMeta({
   title: 'RECD commissioning & compliance handover',
   description:
-    'Performance demonstration, compliance documentation pack, operator briefing and manufacturer warranty registration — signed off with your site representative.',
+    'Performance demonstration, compliance documentation pack, operator briefing and warranty registration — signed off with your site team.',
   path: '/services/commissioning/',
 })
 

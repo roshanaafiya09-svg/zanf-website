@@ -7,9 +7,9 @@ import { contact, whatsappLink } from '@/content/site'
 import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 
 export const metadata = pageMeta({
-  title: 'Contact ZAN-F — book a RECD site assessment',
+  title: 'Contact — book a RECD site assessment',
   description:
-    'Talk to an engineer about RECD supply, installation, testing, commissioning or AMC for your diesel generator. Phone, WhatsApp, email, or send the details of your set.',
+    'Talk to an engineer about RECD supply, installation, testing, commissioning or AMC for your diesel generator. Phone, WhatsApp or email.',
   path: '/contact/',
 })
 

@@ -12,9 +12,9 @@ import { obd } from '@/content/products'
 import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 
 export const metadata = pageMeta({
-  title: 'OBD & emission monitoring for RECD installations',
+  title: 'OBD & emission monitoring for RECD',
   description:
-    'Differential pressure and temperature sensing either side of the device, wired to an OBD panel, calibrated at commissioning and ready for logging or remote monitoring.',
+    'Differential pressure and temperature sensing either side of the device, wired to an OBD panel and calibrated at commissioning.',
   path: '/products/obd-monitoring/',
 })
 

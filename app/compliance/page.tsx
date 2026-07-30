@@ -17,7 +17,7 @@ import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 export const metadata = pageMeta({
   title: 'CPCB & state RECD compliance for DG sets',
   description:
-    'What a RECD is, what CPCB type approval means, what a compliant installation consists of and what evidence to hold — with direct links to the official CPCB and state pollution control board notifications.',
+    'What a RECD is, what CPCB type approval means and what evidence to hold — with direct links to the official CPCB and state board notifications.',
   path: '/compliance/',
 })
 

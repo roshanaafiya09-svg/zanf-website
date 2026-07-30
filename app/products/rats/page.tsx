@@ -12,9 +12,9 @@ import { rats } from '@/content/products'
 import { breadcrumbSchema, pageMeta, productSchema } from '@/lib/seo'
 
 export const metadata = pageMeta({
-  title: 'Platino RATS® — after-treatment for engines above 1000 kVA',
+  title: 'Platino RATS® for engines above 1000 kVA',
   description:
-    'Retrofit After Treatment System for high-horsepower diesel engines above 1000 kVA. PM, HC and CO in one in-line unit, oriented and sized to the duct run that exists.',
+    'Retrofit After Treatment System for high-horsepower diesel engines above 1000 kVA. PM, HC and CO in one unit, sized to the duct run you have.',
   path: '/products/rats/',
 })
 

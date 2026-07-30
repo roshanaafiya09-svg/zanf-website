@@ -5,7 +5,7 @@ import { pageMeta } from '@/lib/seo'
 export const metadata = pageMeta({
   title: 'RECD testing & compliance verification',
   description:
-    'Back-pressure measurement, emission performance checks, OBD calibration and load-condition trials, with deviations rectified and re-tested before commissioning.',
+    'Back-pressure measurement, emission checks, OBD calibration and load trials, with deviations rectified and re-tested before commissioning.',
   path: '/services/testing/',
 })
 

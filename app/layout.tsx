@@ -37,7 +37,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     default: `${site.name} — ${site.positioning}`,
-    template: `%s | ${site.name} — ${site.positioning}`,
+    // The brief asked for the positioning line in every title. It pushed inner
+    // pages to 93–122 characters, all of which Google truncates at roughly 60 —
+    // so the positioning was being cut off anyway. It stays in full on the
+    // homepage, where it is the title that actually ranks for the brand.
+    template: `%s | ${site.name}`,
   },
   description: site.description,
   alternates: { canonical: '/' },

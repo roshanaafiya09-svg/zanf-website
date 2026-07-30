@@ -10,7 +10,7 @@ import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 export const metadata = pageMeta({
   title: 'Products — Platino RECD, RATS® and OBD monitoring',
   description:
-    'CPCB type-approved Platino RECD for 25–1000 kVA diesel generators, RATS® for high-horsepower engines above 1000 kVA, and OBD monitoring hardware. Supplied and installed by ZAN-F.',
+    'CPCB type-approved Platino RECD for 25–1000 kVA generators, RATS® for engines above 1000 kVA, and OBD monitoring — supplied and installed by ZAN-F.',
   path: '/products/',
 })
 
@@ -31,8 +31,12 @@ export default function ProductsPage() {
         breadcrumbs={crumbs}
       />
 
-      <section className="section">
+      <section className="section" aria-labelledby="all-products">
         <div className="shell">
+          {/* The cards are h3. Without this the document jumps h1 → h3. */}
+          <h2 id="all-products" className="sr-only">
+            The three product lines
+          </h2>
           <ProductCards />
 
           <div className="mt-12 rounded-[8px] border border-steel-200 bg-white p-7">

@@ -44,6 +44,16 @@
   --emission-300: #35c08c; /* text and icons on carbon: 7.9:1 */
   --emission-tint: rgb(14 138 95 / 0.08);
 
+  /* The client's own logo colours, recovered from the letter faces in
+     Zanf Logo HD.png by scripts/prepare-brand-logo.mjs. The green came back as
+     #1F8F57 — within a hair of the brief's emission-500, which is a useful
+     confirmation that this palette is already their brand. The blue exists so
+     the lock-up at the top of the hero has somewhere to echo, and is not a
+     third accent for general use. */
+  --brand-green: #1f8f57;
+  --brand-blue: #1d6b96; /* 5.6:1 on air — safe for text on light */
+  --brand-blue-300: #63b3dd; /* 8.1:1 on carbon — the dark-surface variant */
+
   /* Signal amber — compliance and deadlines only */
   --signal-400: #f5b82e; /* on carbon only: 10.4:1 */
   --signal-ink: #7a5300; /* on light: 6.5:1 */
@@ -80,6 +90,8 @@
   --color-emission-700: var(--emission-700);
   --color-emission-300: var(--emission-300);
 
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-300: var(--brand-blue-300);
   --color-signal: var(--signal-400);
   --color-signal-ink: var(--signal-ink);
 

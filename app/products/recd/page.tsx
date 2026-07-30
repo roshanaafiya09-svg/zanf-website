@@ -16,7 +16,7 @@ import { breadcrumbSchema, pageMeta, productSchema } from '@/lib/seo'
 export const metadata = pageMeta({
   title: 'Platino RECD for DG sets — 25 to 1000 kVA',
   description:
-    'CPCB type-approved Retrofit Emission Control Device for diesel generators from 25 to 1000 kVA. FOC + CST catalytic treatment, zero added back pressure per ARAI test report, no moving parts and no consumables.',
+    'CPCB type-approved Retrofit Emission Control Device for 25–1000 kVA diesel generators. FOC + CST treatment, zero added back pressure, no consumables.',
   path: '/products/recd/',
 })
 

@@ -74,6 +74,8 @@ export const organizationSchema = {
   url: site.url,
   description: site.description,
   slogan: site.tagline,
+  logo: `${site.url}/media/zanf-logo-plate.png`,
+  image: `${site.url}/media/zanf-logo-plate.png`,
   address,
   contactPoint: [
     {
@@ -96,6 +98,7 @@ export const localBusinessSchema = {
   description: site.description,
   telephone: contact.phoneDisplay,
   email: contact.emails[0],
+  image: `${site.url}/media/zanf-logo-plate.png`,
   address,
   areaServed: { '@type': 'Country', name: 'India' },
   openingHoursSpecification: [
@@ -134,9 +137,13 @@ export function faqSchema(faqs: { q: string; a: string }[]) {
 }
 
 /**
- * Product schema. No price, rating or review count is emitted — ZAN-F has not
- * published any, and inventing them to win a rich result is exactly the kind of
- * claim this site does not make.
+ * Product schema.
+ *
+ * No price, rating or review count: ZAN-F publishes none, and inventing them to
+ * win a rich result is exactly the kind of claim this site does not make. The
+ * `offers` block was removed for the same reason — an Offer without a price is a
+ * structured-data *error* in Search Console, whereas a Product with no offers is
+ * only a warning. Neither is eligible for a rich result, so the honest one wins.
  */
 export function productSchema({
   name,
@@ -159,12 +166,6 @@ export function productSchema({
     brand: { '@type': 'Brand', name: 'Platino' },
     manufacturer: { '@type': 'Organization', name: site.manufacturer },
     category: 'Retrofit Emission Control Device',
-    offers: {
-      '@type': 'Offer',
-      availability: 'https://schema.org/InStock',
-      seller: { '@type': 'Organization', name: site.legalName },
-      url: `${site.url}/contact/`,
-    },
   }
 }
 

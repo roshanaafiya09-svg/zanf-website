@@ -14,10 +14,14 @@ export const site = {
   name: 'ZAN-F',
   legalName: 'ZAN-F Power Systems',
   url: 'https://www.zanf.in',
-  positioning: 'Authorized Platino RECD Dealer & Turnkey SITC Partner',
+  // Used in the title tag, so it is kept short enough that
+  // "ZAN-F — {positioning}" lands at 53 characters. The hero eyebrow carries the
+  // longer "turnkey SITC partner" wording as visible copy.
+  positioning: 'Authorized Platino RECD Dealer & SITC Partner',
   tagline: 'Compliance you can measure. Power you can trust.',
+  // Kept under 155 characters so search results do not truncate it.
   description:
-    'ZAN-F supplies, installs, tests and commissions CPCB Type-Approved Platino Retrofit Emission Control Devices for diesel generators — turnkey, audit-ready, on schedule.',
+    'ZAN-F supplies, installs, tests and commissions CPCB Type-Approved Platino RECDs for diesel generators — turnkey, audit-ready, on schedule.',
   /**
    * TODO: the live site advertises 15 KVA – 10 MW for DG services; the build
    * brief states 25 kVA – 10 MW for the RECD product range. Both are kept, in
@@ -417,6 +421,23 @@ export const dealerNotice = `Platino®, RECD, RATS® and related marks belong to
 /* -------------------------------------------------------------------------- */
 
 export const media = {
+  /**
+   * The brand lock-up, from the client's own `Zanf Logo HD.png`.
+   *
+   * This is a presentation render — 3D brushed-metal lettering on a dark
+   * textured panel, with bevels and drop shadows baked into the pixels. It has
+   * no transparency and cannot be given any: the letter extrusions are
+   * near-black, so no key separates "dark panel" from "dark bevel". It is
+   * therefore used only on carbon surfaces, presented as a mounted plate rather
+   * than pretended to be a floating logo.
+   * TODO: a flat SVG of the mark would let the logo into the light header too.
+   */
+  logoPlate: {
+    src: '/media/zanf-logo-plate.png',
+    alt: 'ZAN-F Power Systems — Emission Control. The company lock-up: a green and blue sigma monogram beside the ZAN-F wordmark.',
+    width: 1200,
+    height: 431,
+  },
   installedUnit: {
     src: '/media/recd-installed-on-dg-set.jpeg',
     alt: 'A Platino Retrofit Emission Control Device installed on the exhaust line of a green diesel generator set.',

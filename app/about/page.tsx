@@ -12,9 +12,9 @@ import { dealerNotice, media } from '@/content/site'
 import { breadcrumbSchema, pageMeta } from '@/lib/seo'
 
 export const metadata = pageMeta({
-  title: 'About ZAN-F — authorized Platino RECD dealer',
+  title: 'About — authorized Platino RECD dealer',
   description:
-    'ZAN-F Power Systems: over 25 years in diesel generator services, authorized Platino RECD dealer, and the engineering partner that installs, tests, commissions and maintains emission control systems.',
+    'ZAN-F Power Systems: over 25 years in diesel generator services, authorized Platino RECD dealer, and the engineering partner that executes the install.',
   path: '/about/',
 })
 
