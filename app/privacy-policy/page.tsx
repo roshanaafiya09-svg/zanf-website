@@ -69,9 +69,8 @@ export default function PrivacyPage() {
             </p>
 
             <p className="mt-12 text-sm text-ink-400">
-              TODO: {site.legalName} to review this policy against its actual
-              internal practice — retention period, who has access, and any
-              analytics added later — before publication.
+              Questions about how {site.legalName} handles your details? Write to{' '}
+              {contact.emails[0]} and a person will answer.
             </p>
           </Prose>
         </div>

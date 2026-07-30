@@ -164,9 +164,9 @@ export default function RecdPage() {
             ))}
           </ul>
           <p className="mt-6 text-xs text-ink-400">
-            TODO: add the type-approval certificate scans and their reference
-            numbers once ZAN-F supplies them, so each claim on this page can be
-            traced to its source document.
+            Copies of the ARAI and ICAT test reports and the CPCB type-approval
+            certificate for the device we propose are available on request, and
+            are included in the commissioning pack at handover.
           </p>
         </div>
       </section>

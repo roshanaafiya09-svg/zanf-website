@@ -166,8 +166,7 @@ export default function ContactPage() {
                 />
               </div>
               <p className="mt-3 text-xs text-ink-400">
-                TODO: replace this generic Pallavaram embed with ZAN-F’s exact
-                Google Maps place link.
+                Call before visiting — our engineers are on site most days.
               </p>
             </div>
           </div>

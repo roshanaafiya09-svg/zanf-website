@@ -4,11 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
-import {
-  enquirySchema,
-  enquiryToText,
-  type Enquiry,
-} from '@/lib/enquiry'
+import { enquirySchema, enquiryToText, type Enquiry } from '@/lib/enquiry'
 import {
   contact,
   dgRatings,
@@ -21,6 +17,7 @@ const field =
   'w-full rounded-[4px] border border-steel-200 bg-white px-3.5 py-3 text-[0.9375rem] text-ink outline-none transition-colors duration-200 placeholder:text-ink-400 focus:border-[var(--emission-600)]'
 
 const label = 'eyebrow block text-ink-600'
+const errorText = 'mt-2 text-xs text-[var(--signal-ink)]'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
@@ -32,6 +29,10 @@ type Status = 'idle' | 'sending' | 'sent' | 'error'
  *
  * Both post to /api/enquiry, and both offer the WhatsApp fallback carrying the
  * details the visitor already typed — an enquiry is never lost to a 503.
+ *
+ * Errors are linked to their field with `aria-describedby` and the submit
+ * outcome sits in a live region, so a screen-reader user hears *why* a field is
+ * invalid rather than only that it is.
  */
 export default function EnquiryForm({
   variant = 'full',
@@ -43,6 +44,7 @@ export default function EnquiryForm({
   onSuccess?: () => void
 }) {
   const [status, setStatus] = useState<Status>('idle')
+  const [failure, setFailure] = useState<string | null>(null)
   const compact = variant === 'compact'
 
   const {
@@ -57,6 +59,7 @@ export default function EnquiryForm({
 
   async function onSubmit(values: Enquiry) {
     setStatus('sending')
+    setFailure(null)
     try {
       const res = await fetch('/api/enquiry/', {
         method: 'POST',
@@ -66,17 +69,26 @@ export default function EnquiryForm({
       if (res.ok) {
         setStatus('sent')
         onSuccess?.()
-      } else {
-        setStatus('error')
+        return
       }
+      setStatus('error')
+      setFailure(
+        res.status === 429
+          ? 'That is several enquiries from this connection in a short time. Please call or use WhatsApp and we will pick it up straight away.'
+          : 'That did not go through.'
+      )
     } catch {
       setStatus('error')
+      setFailure('That did not go through.')
     }
   }
 
   if (status === 'sent') {
     return (
-      <div className="rounded-[8px] border border-steel-200 bg-white p-8">
+      <div
+        role="status"
+        className="rounded-[8px] border border-steel-200 bg-white p-8"
+      >
         <p className="display text-2xl">Thank you — your enquiry is with us.</p>
         <p className="mt-4 text-sm">
           An engineer will come back to you during office hours. If it is
@@ -97,6 +109,22 @@ export default function EnquiryForm({
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
       <input type="hidden" {...register('source')} />
 
+      {/* Honeypot: off-screen, unreachable by keyboard, invisible to screen
+          readers. A person cannot fill this in; a form-filling bot will. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-[9999px] top-0 h-0 w-0 overflow-hidden"
+      >
+        <label htmlFor="ef-website">Website</label>
+        <input
+          id="ef-website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register('website')}
+        />
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="ef-name" className={label}>
@@ -108,10 +136,11 @@ export default function EnquiryForm({
             className={`${field} mt-2`}
             placeholder="Your name"
             aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? 'ef-name-error' : undefined}
             {...register('name')}
           />
           {errors.name && (
-            <p className="mt-2 text-xs text-[var(--signal-ink)]">
+            <p id="ef-name-error" className={errorText}>
               {errors.name.message}
             </p>
           )}
@@ -144,10 +173,11 @@ export default function EnquiryForm({
             className={`${field} mt-2`}
             placeholder="10-digit mobile number"
             aria-invalid={!!errors.phone}
+            aria-describedby={errors.phone ? 'ef-phone-error' : undefined}
             {...register('phone')}
           />
           {errors.phone && (
-            <p className="mt-2 text-xs text-[var(--signal-ink)]">
+            <p id="ef-phone-error" className={errorText}>
               {errors.phone.message}
             </p>
           )}
@@ -164,10 +194,11 @@ export default function EnquiryForm({
             className={`${field} mt-2`}
             placeholder="name@company.com"
             aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? 'ef-email-error' : undefined}
             {...register('email')}
           />
           {errors.email && (
-            <p className="mt-2 text-xs text-[var(--signal-ink)]">
+            <p id="ef-email-error" className={errorText}>
               {errors.email.message}
             </p>
           )}
@@ -203,6 +234,9 @@ export default function EnquiryForm({
             className={`${field} mt-2`}
             defaultValue=""
             aria-invalid={!!errors.requirement}
+            aria-describedby={
+              errors.requirement ? 'ef-requirement-error' : undefined
+            }
             {...register('requirement')}
           >
             <option value="" disabled>
@@ -215,7 +249,7 @@ export default function EnquiryForm({
             ))}
           </select>
           {errors.requirement && (
-            <p className="mt-2 text-xs text-[var(--signal-ink)]">
+            <p id="ef-requirement-error" className={errorText}>
               {errors.requirement.message}
             </p>
           )}
@@ -278,15 +312,18 @@ export default function EnquiryForm({
         </a>
       </div>
 
-      {status === 'error' && (
-        <p className="text-sm text-[var(--signal-ink)]">
-          That did not go through. Please use WhatsApp, or call{' '}
-          <a href={`tel:${contact.phoneHref}`} className="figure underline">
-            {contact.phoneDisplay}
-          </a>
-          .
-        </p>
-      )}
+      {/* Always present so the region is registered before the message lands. */}
+      <div role="alert" aria-live="polite">
+        {status === 'error' && (
+          <p className="text-sm text-[var(--signal-ink)]">
+            {failure} Please use WhatsApp, or call{' '}
+            <a href={`tel:${contact.phoneHref}`} className="figure underline">
+              {contact.phoneDisplay}
+            </a>
+            .
+          </p>
+        )}
+      </div>
 
       <p className="text-xs text-ink-400">
         We use these details to answer your enquiry. Nothing is shared with

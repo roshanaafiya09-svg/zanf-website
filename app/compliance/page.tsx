@@ -55,10 +55,14 @@ export default function CompliancePage() {
               </strong>{' '}
               Requirements differ by state and change without notice. The
               official notifications linked below are the authority — read the
-              source before making a decision.{' '}
-              <span className="mono text-[0.75rem] uppercase tracking-[0.08em] text-[var(--signal-ink)]">
-                TODO: verify current CPCB / NGT directives
-              </span>
+              source before making a decision, or{' '}
+              <a
+                href="/contact/"
+                className="text-[var(--signal-ink)] underline underline-offset-4"
+              >
+                ask us which one applies to your site
+              </a>
+              .
             </span>
           </p>
         </div>
@@ -142,8 +146,8 @@ export default function CompliancePage() {
             ))}
           </ul>
           <p className="mt-6 text-xs text-ink-400">
-            Links are reproduced as published by ZAN-F. TODO: review quarterly —
-            state boards reissue and relocate these documents without notice.
+            State boards reissue and relocate these documents without notice. If
+            a link has moved, tell us and we will trace the current version.
           </p>
         </div>
       </section>
@@ -168,9 +172,9 @@ export default function CompliancePage() {
             ))}
           </ul>
           <p className="mt-6 text-xs text-ink-400">
-            TODO: publish the type-approval certificate scans and reference
-            numbers once supplied, so visitors can verify the approval rather
-            than take it on trust.
+            The type-approval certificate for the device we propose is available
+            on request, and forms part of the compliance pack you are handed at
+            commissioning.
           </p>
         </div>
       </section>

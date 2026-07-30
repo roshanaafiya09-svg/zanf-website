@@ -38,13 +38,16 @@ export default function ProjectsPage() {
           {published.length === 0 && (
             <div className="mb-10 rounded-[8px] border border-steel-200 bg-white p-7">
               <p className="mono text-[0.6875rem] uppercase tracking-[0.14em] text-[var(--signal-ink)]">
-                Status
+                Why this page is empty
               </p>
               <p className="mt-3 max-w-2xl text-sm">
-                No project has been published yet. Each card below is a
-                placeholder waiting on real data — client or sector, location,
-                DG rating, scope, product, measured outcome and site
-                photographs with permission to publish.
+                We publish a case study only once the client has agreed to
+                release the details — sector, location, DG rating, scope,
+                measured outcome and photographs of their own plant. None have
+                been cleared for publication yet, so rather than fill the page
+                with generic copy we have left the slots as they are. If you
+                want to speak to a reference site, ask us and we will see who is
+                willing.
               </p>
             </div>
           )}

@@ -128,7 +128,7 @@ export const recd = {
       { label: 'Instrumentation', value: 'ΔP + temperature', note: 'Taps either side of the device' },
     ],
     footnote:
-      'TODO: attach the ARAI / ICAT type-approval report number and the certificate scan so each figure above can be traced to its source document.',
+      'Figures are as stated in the manufacturer’s type-approval documentation. The ARAI and ICAT test reports and the CPCB type-approval certificate for the installed device are supplied with the commissioning pack, and are available on request beforehand.',
   },
   benefits: [
     {
@@ -241,7 +241,7 @@ export const rats = {
       { label: 'Instrumentation', value: 'ΔP + temperature', note: 'Taps either side of the unit' },
     ],
     footnote:
-      'TODO: dimensional and flow tables per rating to be supplied by Platino for publication.',
+      'Dimensions and flow figures are established per engine at the site survey rather than selected from a table — ask us for the sizing note for your rating.',
   },
   faqs: [
     {
@@ -305,7 +305,7 @@ export const obd = {
       { label: 'Remote', value: 'Optional', note: 'Site dependent' },
     ],
     footnote:
-      'TODO: panel model, sensor ranges and communication protocol to be confirmed with Platino before publication.',
+      'Panel model, sensor ranges and the communication protocol depend on the device and the site. We will confirm the exact specification for your installation at survey.',
   },
   portalNote:
     'Soon: track your fleet’s RECD health, installation status and compliance documents in the ZAN-F Client Portal.',

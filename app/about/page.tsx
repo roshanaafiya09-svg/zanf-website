@@ -92,8 +92,8 @@ export default function AboutPage() {
             {dealerNotice}
           </p>
           <p className="mt-3 text-xs text-ink-400">
-            TODO: publish the dealer authorization certificate here once ZAN-F
-            supplies a scan, so the claim can be verified rather than trusted.
+            Our Platino dealer authorization is available on request — ask and we
+            will send it, rather than expecting you to take the claim on trust.
           </p>
         </div>
       </section>

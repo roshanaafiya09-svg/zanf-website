@@ -108,6 +108,43 @@ is the field that makes the second business line measurable.
 
 ---
 
+## Audit pass
+
+A post-build audit found and fixed four things worth recording:
+
+- **Visitor-facing `TODO:` notes are gone.** Eight pages were showing internal
+  notes to the public ("TODO: verify current CPCB / NGT directives" on the
+  compliance banner, and similar). They now say the equivalent thing in
+  visitor language — "available on request", "confirmed at survey" — and the
+  internal versions live only in the table below. The project cards still read
+  **Awaiting client release**, which is deliberate.
+- **Icons added.** `app/icon.tsx` and `app/apple-icon.tsx` generate a 32px tab
+  icon and a 180px home-screen icon at build time. Replace both with the real
+  mark when the SVG logo arrives.
+- **Link previews fixed on every page.** Next only inherits the root
+  `opengraph-image` into pages that do not declare `openGraph` themselves —
+  every page here does, so the inner pages were shipping with no preview image.
+  `pageMeta()` now states the image explicitly. A WhatsApp share of a product
+  page shows the card, not a bare link.
+- **The enquiry endpoint is no longer open.** A honeypot field (`website`,
+  off-screen and `tabindex="-1"`) discards bot submissions with a 200 so the
+  script gets no signal to retry, and `lib/rate-limit.ts` caps five enquiries
+  per address per ten minutes with a `Retry-After` header. The limiter is
+  in-process, so on a serverless host it is a speed bump rather than a wall —
+  swap the Map for Vercel KV or Upstash if spam ever becomes real.
+
+Also fixed while in the same file: form validation errors are now linked to
+their field with `aria-describedby`, and the submit outcome sits in a live
+region, so a screen-reader user hears why a field is invalid rather than only
+that it is.
+
+Known and not yet fixed, in priority order: page titles run 93–122 characters
+and will truncate in search results (the `{Page} | ZAN-F — Authorized Platino
+RECD Dealer & SITC Partner` pattern is the cause — shortening the suffix to
+`| ZAN-F` fixes it); seven meta descriptions exceed ~155 characters; `/projects/`
+and `/insights/` jump from `h1` to `h3`; `Product.offers` carries no price and
+`Organization` no logo, which Search Console will flag as warnings.
+
 ## Needed from ZAN-F
 
 | # | Item | Where it lands | Effect if not supplied |

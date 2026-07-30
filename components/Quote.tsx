@@ -62,9 +62,11 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
       }
       if (e.key !== 'Tab' || !panelRef.current) return
 
-      // Keep tabbing inside the dialog while it is open.
+      // Keep tabbing inside the dialog while it is open. Hidden inputs and the
+      // form's honeypot are excluded — neither can take focus, and treating one
+      // as the first stop would break the wrap.
       const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'a[href], button:not([disabled]), input:not([type="hidden"]):not([tabindex="-1"]), select, textarea, [tabindex]:not([tabindex="-1"])'
       )
       if (focusable.length === 0) return
       const first = focusable[0]
@@ -79,11 +81,11 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
     }
 
     window.addEventListener('keydown', onKey)
-    // Not just `input` — the first one in the form is the hidden `source`
-    // field, and focusing it silently does nothing.
+    // Not just `input` — the form opens with a hidden `source` field and an
+    // off-screen honeypot, and focusing either silently does nothing.
     panelRef.current
       ?.querySelector<HTMLElement>(
-        'input:not([type="hidden"]), select, textarea'
+        'input:not([type="hidden"]):not([tabindex="-1"]), select, textarea'
       )
       ?.focus()
 

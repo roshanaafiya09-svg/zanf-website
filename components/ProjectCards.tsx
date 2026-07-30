@@ -6,9 +6,10 @@ import type { Project } from '@/lib/content'
  * Project cards.
  *
  * A `pending` entry does not pretend to be a project. It renders as an
- * unmistakable placeholder — dashed border, TODO label, empty fields — because
- * a plausible-looking invented case study is the single most damaging thing
- * this site could contain.
+ * unmistakable placeholder — dashed border, "awaiting client release" chip,
+ * empty fields — because a plausible-looking invented case study is the single
+ * most damaging thing this site could contain. The wording is aimed at a
+ * visitor rather than at us; the internal checklist lives in HANDOVER.md.
  */
 export default function ProjectCards({
   projects,
@@ -64,13 +65,14 @@ export default function ProjectCards({
             className="flex flex-col rounded-[8px] border border-dashed border-[var(--hairline-strong)] bg-[var(--steel-100)] p-6"
           >
             <p className="mono inline-flex w-fit items-center rounded-[4px] bg-[var(--signal-tint)] px-2.5 py-1 text-[0.625rem] uppercase tracking-[0.14em] text-[var(--signal-ink)]">
-              TODO · awaiting client data
+              Awaiting client release
             </p>
             <h3 className="display mt-5 text-lg text-ink-600">{project.title}</h3>
             <p className="mt-3 text-sm text-ink-400">
               Sector, location, DG rating, scope, product, outcome and site
-              photographs will be published here once ZAN-F releases the details
-              of this installation. Nothing has been written in the meantime.
+              photographs are published here once the client agrees to release
+              them. We would rather leave the slot visibly empty than write a
+              case study nobody signed off.
             </p>
             <dl className="mono mt-6 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-steel-200 pt-5 text-[0.6875rem] uppercase tracking-[0.08em] text-ink-400">
               {['Sector', 'Location', 'DG rating', 'Scope'].map((field) => (

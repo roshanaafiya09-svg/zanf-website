@@ -23,6 +23,12 @@ export const enquirySchema = z.object({
   message: z.string().trim().optional().default(''),
   /** Which page and CTA the enquiry came from. Hidden field, not user input. */
   source: z.string().trim().max(120).optional().default(''),
+  /**
+   * Honeypot. Hidden from people, irresistible to form-filling bots. Anything
+   * in here means the submission is discarded — see the API route, which
+   * answers 200 so the bot has no signal to retry against.
+   */
+  website: z.string().max(200).optional().default(''),
 })
 
 export type Enquiry = z.infer<typeof enquirySchema>

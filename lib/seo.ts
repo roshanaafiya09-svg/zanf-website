@@ -8,6 +8,21 @@ import { contact, site } from '@/content/site'
  * `{Page} | ZAN-F — Authorized Platino RECD Dealer & SITC Partner`
  * The template lives in the root layout; pages supply the leading segment.
  */
+/**
+ * The shared link-preview card, stated explicitly.
+ *
+ * Next only inherits the root `opengraph-image` route into pages that do not
+ * declare `openGraph` themselves. Every page here does, so without this the
+ * inner pages shipped with no preview image at all — and a bare card is exactly
+ * what a WhatsApp share of a product page would have shown.
+ */
+const ogImage = {
+  url: '/opengraph-image/',
+  width: 1200,
+  height: 630,
+  alt: `${site.name} — ${site.positioning}`,
+}
+
 export function pageMeta({
   title,
   description,
@@ -24,15 +39,19 @@ export function pageMeta({
     openGraph: {
       type: 'website',
       url: path,
-      title: `${title} | ${site.name} — ${site.positioning}`,
+      // The brand suffix is dropped here: a social card already shows the site
+      // name, and 100+ characters of title is what gets truncated everywhere.
+      title,
       description,
       siteName: site.name,
       locale: 'en_IN',
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | ${site.name}`,
+      title,
       description,
+      images: [ogImage.url],
     },
   }
 }
