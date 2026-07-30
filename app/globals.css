@@ -1,98 +1,103 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
-   ZAN-F — "Plant Room"
+   ZAN-F — "Precision Air"
 
-   The palette is taken from the client's own hardware photography rather than
-   from a brand guideline: the deep teal-black of a generator enclosure, the
-   stainless of the exhaust lagging, and — the accent — the copper of the FOC
-   catalyst substrate visible in the RECD cross-section.
+   The identity comes from the subject itself: exhaust turned clean. Light
+   dominates — the page is air. Carbon appears four times on the homepage and
+   never more, so a dark band reads as punctuation rather than as a theme.
 
-   Deliberately NOT green-on-black. The brand green lives in the photographs,
-   where the gensets already are. The interface around them is instrumentation:
-   steel, copper, and hairlines.
+   One accent carries meaning: emission green is action (CTA, link, active,
+   verified). Amber is used at most twice per page and only for compliance and
+   deadline copy. Everything else is steel and hairlines.
 
-   Dark is the default for everyone, not only for visitors whose OS asks for it.
-   Light is a fully supported alternative, not an afterthought.
+   Every text/background pair below was measured, not eyeballed. The floor is
+   4.5:1 for body copy and 3:1 for meaningful graphics. Where the brand token
+   could not clear it — #0E8A5F is only 4.36:1 against white and 4.25:1 against
+   carbon — a darkened or brightened sibling is used for text and the brand
+   value stays for decorative fills.
 --------------------------------------------------------------------------- */
 
 :root {
-  --canvas: #06100d;
-  --surface-1: #0a1815;
-  --surface-2: #0f211c;
-  --hairline: rgb(199 212 207 / 0.11);
-  --hairline-strong: rgb(199 212 207 / 0.24);
-  --text-hi: #e8f0ec;
-  --text-mid: #9bb0a8;
-  --text-lo: #7d938b;
-  --accent: #d08a4e;
-  --accent-quiet: rgb(208 138 78 / 0.16);
-  --warn: #e8b93f;
-  --cta-fill: #e8f0ec;
-  --cta-ink: #06100d;
-  /* Radiance: same hues, more light in them. The haze gains a brighter core
-     and the copper carries a soft halo, so the page reads as lit rather than
-     flat. Nothing here sits behind body copy — contrast is unaffected. */
-  --haze: rgb(31 132 106 / 0.5);
-  --haze-core: rgb(64 178 142 / 0.3);
-  --ember: rgb(208 138 78 / 0.22);
-  --glow-accent: 0 0 24px rgb(208 138 78 / 0.45);
-  --scrim: rgb(6 16 13 / 0.76);
-  --media-veil: rgb(6 16 13 / 0.5);
-  /* The dirty half of the hero trace. Kept murky on purpose, but held above
-     the 3:1 floor for meaningful graphics so it stays visible. */
-  --soot: #5d706a;
-  color-scheme: dark;
-}
+  /* Surfaces */
+  --air-050: #f6faf8;
+  --air-white: #ffffff;
+  --steel-100: #eef3f0;
+  --steel-200: #dee5e1;
+  --carbon-950: #0e1512;
+  --carbon-800: #1c2a24;
 
-[data-theme='light'] {
-  --canvas: #f3f6f4;
-  --surface-1: #ffffff;
-  --surface-2: #e8eeeb;
-  --hairline: rgb(6 16 13 / 0.13);
-  --hairline-strong: rgb(6 16 13 / 0.26);
-  --text-hi: #06100d;
-  --text-mid: #465650;
-  --text-lo: #5a6a63;
-  --accent: #8a4f22;
-  --accent-quiet: rgb(138 79 34 / 0.12);
-  --warn: #7e5200;
-  --cta-fill: #06100d;
-  --cta-ink: #f3f6f4;
-  --haze: rgb(31 132 106 / 0.2);
-  --haze-core: rgb(64 178 142 / 0.16);
-  --ember: rgb(208 138 78 / 0.18);
-  --glow-accent: 0 0 20px rgb(138 79 34 / 0.3);
-  --scrim: rgb(243 246 244 / 0.78);
-  --media-veil: rgb(243 246 244 / 0.55);
-  --soot: #7b8983;
+  /* Ink */
+  --ink-900: #10201a; /* 17.5:1 on air  */
+  --ink-600: #46564f; /* 7.37:1 on air  */
+  --ink-400: #5f7068; /* 4.98:1 on air, 5.24:1 on white */
+
+  /* Ink on carbon */
+  --air-ink: #f0f6f3; /* 17.6:1 on carbon */
+  --air-mid: #a7bab2; /* 9.08:1 on carbon */
+  --air-lo: #7f938b; /* 5.0:1  on carbon */
+
+  /* Emission green — the only action colour */
+  --emission-500: #0e8a5f; /* brand value: fills, rules, decoration */
+  --emission-600: #0a7350; /* button fill: 5.87:1 with white text */
+  --emission-700: #0a6b4a; /* link/label text on light: 6.2:1 */
+  --emission-300: #35c08c; /* text and icons on carbon: 7.9:1 */
+  --emission-tint: rgb(14 138 95 / 0.08);
+
+  /* Signal amber — compliance and deadlines only */
+  --signal-400: #f5b82e; /* on carbon only: 10.4:1 */
+  --signal-ink: #7a5300; /* on light: 6.5:1 */
+  --signal-tint: rgb(245 184 46 / 0.14);
+
+  /* Lines */
+  --hairline: rgb(16 32 26 / 0.1);
+  --hairline-strong: rgb(16 32 26 / 0.22);
+  --hairline-dark: rgb(222 229 225 / 0.13);
+  --hairline-dark-strong: rgb(222 229 225 / 0.28);
+
+  --shell: 77.5rem; /* 1240px */
   color-scheme: light;
 }
 
 @theme inline {
-  --color-canvas: var(--canvas);
-  --color-surface-1: var(--surface-1);
-  --color-surface-2: var(--surface-2);
+  --color-air: var(--air-050);
+  --color-white: var(--air-white);
+  --color-steel-100: var(--steel-100);
+  --color-steel-200: var(--steel-200);
+  --color-carbon: var(--carbon-950);
+  --color-carbon-800: var(--carbon-800);
+
+  --color-ink: var(--ink-900);
+  --color-ink-600: var(--ink-600);
+  --color-ink-400: var(--ink-400);
+
+  --color-air-ink: var(--air-ink);
+  --color-air-mid: var(--air-mid);
+  --color-air-lo: var(--air-lo);
+
+  --color-emission: var(--emission-500);
+  --color-emission-600: var(--emission-600);
+  --color-emission-700: var(--emission-700);
+  --color-emission-300: var(--emission-300);
+
+  --color-signal: var(--signal-400);
+  --color-signal-ink: var(--signal-ink);
+
   --color-hairline: var(--hairline);
   --color-hairline-strong: var(--hairline-strong);
-  --color-hi: var(--text-hi);
-  --color-mid: var(--text-mid);
-  --color-lo: var(--text-lo);
-  --color-accent: var(--accent);
-  --color-warn: var(--warn);
-  --color-soot: var(--soot);
-  --color-cta: var(--cta-fill);
-  --color-cta-ink: var(--cta-ink);
+  --color-hairline-dark: var(--hairline-dark);
+  --color-hairline-dark-strong: var(--hairline-dark-strong);
 
   --font-display: var(--font-archivo);
-  --font-sans: var(--font-public-sans);
-  --font-mono: var(--font-space-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
 }
 
 /* --------------------------------------------------------------------------- */
 
 * {
   border-color: var(--hairline);
+  min-width: 0;
 }
 
 html {
@@ -101,135 +106,244 @@ html {
 }
 
 body {
-  background: var(--canvas);
-  color: var(--text-mid);
+  background: var(--air-050);
+  color: var(--ink-600);
   font-family: var(--font-sans);
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: var(--accent);
-  color: #1a0f06;
+  background: var(--emission-500);
+  color: #ffffff;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--emission-600);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
-/* Archivo, heavy and tight. Equipment-plate lettering, not a website headline. */
+/* On carbon the focus ring needs the light-side green to stay visible. */
+.on-carbon :focus-visible {
+  outline-color: var(--emission-300);
+}
+
+/* --- Type -----------------------------------------------------------------
+   Archivo, tight and confident — equipment-plate lettering, not a headline
+   font. IBM Plex Mono carries every figure, unit and label without exception:
+   that consistency is what makes the page read as instrumentation.          */
+
 .display {
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.032em;
-  line-height: 1.02;
-  color: var(--text-hi);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink-900);
+  text-wrap: balance;
 }
 
-/* Space Mono reads like instrument silkscreen. Short strings only — labels,
-   readings and units. Never body copy: it is too wide to read in paragraphs. */
+.on-carbon .display {
+  color: var(--air-ink);
+}
+
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-lo);
+  line-height: 1.4;
+  color: var(--emission-700);
+}
+
+.on-carbon .eyebrow {
+  color: var(--emission-300);
 }
 
 .figure {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
-  color: var(--text-hi);
+  color: var(--ink-900);
 }
 
-.section {
-  padding-block: 4.5rem;
+.on-carbon .figure {
+  color: var(--air-ink);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.lede {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink-600);
+}
+
+.on-carbon,
+.on-carbon .lede {
+  color: var(--air-mid);
 }
 
 @media (min-width: 768px) {
-  .section {
-    padding-block: 7.5rem;
+  .lede {
+    font-size: 1.1875rem;
   }
 }
 
-@media (min-width: 1280px) {
-  .section {
-    padding-block: 9.5rem;
-  }
-}
+/* --- Layout ---------------------------------------------------------------- */
 
 .shell {
   width: 100%;
-  max-width: 78rem;
+  max-width: var(--shell);
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
 
 @media (min-width: 768px) {
   .shell {
-    padding-inline: 2.5rem;
+    padding-inline: 2rem;
   }
 }
 
-/* Plant-room haze: light bouncing off an enclosure, not a neon bloom. */
-.grain::after {
+.section {
+  padding-block: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-block: 6rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section {
+    padding-block: 8rem;
+  }
+}
+
+.section-tight {
+  padding-block: 3rem;
+}
+
+@media (min-width: 768px) {
+  .section-tight {
+    padding-block: 4.5rem;
+  }
+}
+
+/* --- The signature: Clean-Air Gradient Rule -------------------------------
+   Carbon → emission → air. Exhaust entering dirty and leaving clean, drawn as
+   a 2px line. It sits under the H1, divides sections, and forms the spine of
+   the ITC process timeline.                                                 */
+
+.rule-clean {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--carbon-950) 0%,
+    var(--carbon-800) 18%,
+    var(--emission-500) 52%,
+    var(--emission-300) 72%,
+    rgb(246 250 248 / 0) 100%
+  );
+}
+
+.on-carbon .rule-clean {
+  background: linear-gradient(
+    90deg,
+    rgb(222 229 225 / 0.14) 0%,
+    var(--emission-500) 45%,
+    var(--emission-300) 68%,
+    rgb(240 246 243 / 0.9) 100%
+  );
+}
+
+.rule-draw {
+  transform-origin: left center;
+  animation: rule-draw 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+}
+
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* --- Surfaces -------------------------------------------------------------- */
+
+.card {
+  background: var(--air-white);
+  border: 1px solid var(--steel-200);
+  border-radius: 8px;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+a.card:hover,
+.card-hover:hover {
+  border-color: var(--emission-500);
+  transform: translateY(-2px);
+}
+
+.on-carbon .card {
+  background: var(--carbon-800);
+  border-color: var(--hairline-dark);
+}
+
+.on-carbon a.card:hover,
+.on-carbon .card-hover:hover {
+  border-color: var(--emission-300);
+}
+
+/* Blueprint grid — 1px lines at 64px, barely there. Used on carbon bands so a
+   large dark area has some structure without any imagery. */
+.grid-lines {
+  background-image:
+    linear-gradient(var(--hairline-dark) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hairline-dark) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+}
+
+/* Photography treatment: carbon fading in from the base so the client's
+   mixed-quality photographs sit together and captions stay legible. */
+.duotone::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background: linear-gradient(
+    to top,
+    rgb(14 21 18 / 0.82) 0%,
+    rgb(14 21 18 / 0.35) 42%,
+    rgb(14 21 18 / 0.06) 100%
+  );
 }
 
-/* Client logos keep their own brand colours. The white background is removed
-   in scripts/prepare-logos.mjs, so the page colour shows straight through. */
-/* The signature trace draws itself once, left to right. */
-@keyframes trace-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
+.prose-technical p {
+  margin-block: 1rem;
+  max-width: 68ch;
 }
 
-@keyframes node-settle {
-  from {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Footer: a slow breathing radiance, and a copper line that sweeps the rule. */
-@keyframes breathe {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.12);
-  }
-}
-
-@keyframes sweep {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(400%);
-  }
-}
+/* --- Motion ---------------------------------------------------------------- */
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -238,7 +352,33 @@ body {
 }
 
 .rise {
-  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* The hero headline arrives from behind its own baseline, one line at a time. */
+@keyframes line-reveal {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.line-mask > span {
+  display: block;
+  animation: line-reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes trace-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

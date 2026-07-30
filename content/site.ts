@@ -1,26 +1,32 @@
 /**
- * Every string on the site lives here.
+ * Global site data — chrome, contact, homepage sections.
  *
- * Sourced from zanf-redesign-build-plan.md first, then from the live site at
- * www.zanf.in. Nothing on this page is invented — if a value is unknown it is
- * `null` and the component that consumes it hides itself. Obvious typos on the
- * live site ("Custome Design", "D2 ycle") are corrected; wording is not.
+ * Every string on the site lives in `content/`, never in a component, so the
+ * client can edit copy without touching JSX.
+ *
+ * Sourcing rule: a value here is either published by ZAN-F today, stated in
+ * `zanf-redesign-build-plan.md`, or `null`. Nothing is invented. Where a value
+ * is null the component that consumes it hides itself — see REDESIGN-PLAN.md §8
+ * for the full list of what the client still owes.
  */
 
 export const site = {
   name: 'ZAN-F',
   legalName: 'ZAN-F Power Systems',
-  tagline: 'Pure Power, Pure Planet',
   url: 'https://www.zanf.in',
+  positioning: 'Authorized Platino RECD Dealer & Turnkey SITC Partner',
+  tagline: 'Compliance you can measure. Power you can trust.',
   description:
-    'ZAN-F supplies type-approved Retrofit Emission Control Devices (RECD) and Retrofit After Treatment Systems (RATS) for diesel generators from 15 KVA to 10 MW, backed by over 25 years in DG set services.',
-  dealership: 'Dealers in Platino',
-  productLines: [
-    'Retrofit Emission Control Device (RECD)',
-    'Retrofit After Treatment System (RATS)',
-  ],
-  range: '15 KVA – 10 MW',
-  copyrightHolder: 'ZANF',
+    'ZAN-F supplies, installs, tests and commissions CPCB Type-Approved Platino Retrofit Emission Control Devices for diesel generators — turnkey, audit-ready, on schedule.',
+  /**
+   * TODO: the live site advertises 15 KVA – 10 MW for DG services; the build
+   * brief states 25 kVA – 10 MW for the RECD product range. Both are kept, in
+   * the contexts they belong to, until the client confirms one.
+   */
+  recdRange: '25 kVA – 10 MW',
+  dgServiceRange: '15 kVA – 10 MW',
+  yearsInDgServices: 25,
+  manufacturer: 'Platino Automotive Pvt. Ltd.',
   credit: 'Designed & Developed by The Green Digital',
 } as const
 
@@ -32,147 +38,342 @@ export const contact = {
   emails: ['info@zanf.in', 'info@zanf.org'],
   phoneDisplay: '+91 95002 45599',
   phoneHref: '+919500245599',
-  // The WhatsApp number is assumed to be the same line as the phone number.
-  // TODO: confirm with the client, or replace with a dedicated WhatsApp number.
+  // TODO: confirm — assumed to be the same line as the phone number.
   whatsapp: '919500245599',
   hours: [
-    { days: 'Monday – Friday', time: '9am – 7pm' },
+    { days: 'Monday – Friday', time: '9:00 – 19:00' },
     { days: 'Saturday – Sunday', time: 'Closed' },
   ],
   website: 'www.zanf.in',
+  // TODO: confirm the states ZAN-F actually covers for site work.
+  coverageNote:
+    'Site work across Tamil Nadu and neighbouring states. Ask us about your location — we will tell you plainly whether we can cover it.',
 } as const
 
-export const social = [
-  // TODO: replace with the client's real profile URLs — the live site's icons
-  // are wired to placeholders.
-  { label: 'Facebook', href: '#', icon: 'facebook' },
-  { label: 'X', href: '#', icon: 'x' },
-  { label: 'LinkedIn', href: '#', icon: 'linkedin' },
-  { label: 'Instagram', href: '#', icon: 'instagram' },
-] as const
+/**
+ * TODO: real profile URLs. Icons pointing at `#` were removed rather than
+ * shipped — a dead social icon costs more trust than a missing one.
+ */
+export const social: { label: string; href: string; icon: string }[] = []
 
-export const nav = [
+export const whatsappLink = (message?: string) =>
+  `https://wa.me/${contact.whatsapp}${
+    message ? `?text=${encodeURIComponent(message)}` : ''
+  }`
+
+/* -------------------------------------------------------------------------- */
+/*  Navigation                                                                */
+/* -------------------------------------------------------------------------- */
+
+export type NavItem = {
+  label: string
+  href: string
+  children?: { label: string; href: string; note: string }[]
+}
+
+export const nav: NavItem[] = [
   { label: 'Home', href: '/' },
-  { label: 'About Us', href: '/about-us/' },
-  { label: 'Our Services', href: '/our-services/' },
-  { label: 'Contact Us', href: '/contact-us/' },
-] as const
-
-/** Exactly the six external links in the live site's dropdown, unchanged. */
-export const notifications = [
   {
-    label: 'Central Pollution Control Board',
-    short: 'CPCB',
-    scope: 'National',
-    href: 'https://cpcb.nic.in/genset-notifications/',
-  },
-  {
-    label: 'Tamil Nadu Pollution Control Board',
-    short: 'TNPCB',
-    scope: 'Tamil Nadu',
-    href: 'https://tnpcb.gov.in/pdf_2024/RetofittingEmissionControl2024.pdf',
-  },
-  {
-    label: 'Kerala Pollution Control Board',
-    short: 'KSPCB',
-    scope: 'Kerala',
-    href: 'https://kspcb.kerala.gov.in/assets/uploads/widget/circulars/DG_Set_500_kVA_(1).pdf',
+    label: 'Products',
+    href: '/products/',
+    children: [
+      {
+        label: 'Platino RECD',
+        href: '/products/recd/',
+        note: '25 – 1000 kVA diesel generators',
+      },
+      {
+        label: 'Platino RATS®',
+        href: '/products/rats/',
+        note: 'High-horsepower engines above 1000 kVA',
+      },
+      {
+        label: 'OBD & Monitoring',
+        href: '/products/obd-monitoring/',
+        note: 'Panels, sensing and remote monitoring',
+      },
+    ],
   },
   {
-    label: 'Maharashtra Pollution Control Board',
-    short: 'MPCB',
-    scope: 'Maharashtra',
-    href: 'https://www.mpcb.gov.in/node/6543',
+    label: 'Services',
+    href: '/services/',
+    children: [
+      {
+        label: 'Installation',
+        href: '/services/installation/',
+        note: 'Mechanical erection and exhaust integration',
+      },
+      {
+        label: 'Testing',
+        href: '/services/testing/',
+        note: 'Back-pressure and emission verification',
+      },
+      {
+        label: 'Commissioning',
+        href: '/services/commissioning/',
+        note: 'Demonstration, documents, handover',
+      },
+      {
+        label: 'AMC & Support',
+        href: '/services/amc/',
+        note: 'Inspection, catalyst health, uptime',
+      },
+    ],
   },
-  {
-    label: 'Karnataka State Pollution Control Board',
-    short: 'KSPCB',
-    scope: 'Karnataka',
-    href: 'https://kspcb.karnataka.gov.in/sites/default/files/inline-files/Notification_0.pdf',
-  },
-  {
-    label: 'Delhi Pollution Control Board',
-    short: 'DPCC',
-    scope: 'Delhi',
-    href: 'https://pib.gov.in/PressReleaseIframePage.aspx?PRID=1962141',
-  },
-] as const
-
-export const valueProps = [
-  {
-    title: 'Sustainable Innovation',
-    body: 'Leading the way with groundbreaking Retrofit Emission Control Devices.',
-    icon: 'leaf',
-  },
-  {
-    title: 'Customer-Centric Focus',
-    body: 'Delivering unmatched service tailored to meet client-specific needs.',
-    icon: 'users',
-  },
-  {
-    title: 'Regulatory Compliance',
-    body: 'Ensuring adherence to industry standards while exceeding emission requirements.',
-    icon: 'shield',
-  },
-  {
-    title: 'Real-World Impact',
-    body: 'Significantly reducing emissions for a cleaner, healthier environment.',
-    icon: 'wind',
-  },
-] as const
-
-export const about = {
-  eyebrow: 'About Us',
-  heading: 'Innovative, Sustainable Emission Control Solutions',
-  intro:
-    'Welcome to ZAN-F where innovation meets environmental responsibility. As a forward-thinking and customer-centric organisation, we are deeply entrenched in the industry, known for our groundbreaking Retrofit Emission Control Device (RECD) and unparalleled service. Our commitment is to provide sustainable solutions that not only comply with regulatory standards but also significantly reduce real-world emissions.',
-  expertise: {
-    heading: 'Expertise',
-    body: 'With over 25 years of expertise in DG set services, we’re leading the industry in cleaner air solutions. Our innovative Retrofit Emission Control Device enhances air quality globally, a testament to our commitment to environmental responsibility.',
-  },
-  personnel: [
-    'Our highly experienced and knowledgeable personnel are the driving force behind this creative approach. They design these solutions to meet the most recent worldwide emission regulations.',
-    'Because of our knowledge and experience, we promote change internationally, delivering best practices and enhancing air quality while safeguarding public health.',
-  ],
-  lead: {
-    heading: 'Leading provider of innovative Retrofit Emission Control Devices.',
-    body: 'Our expertise lies in delivering cutting-edge Retrofit Emission Control Devices (RECD) that ensure compliance, sustainability, and measurable reduction in emissions.',
-  },
-} as const
-
-/**
- * Verified figures only — each one is sourced from the live site or the build
- * plan. These carry the hero panel.
- */
-export const specs = [
-  { label: 'Experience', value: '25', unit: ' yrs +' },
-  { label: 'Range covered', value: '15', unit: ' KVA – 10 MW' },
-  { label: 'Back pressure', value: '0.0', unit: ' kPa' },
-  { label: 'Tested to', value: 'ISO 8178', unit: ' D2' },
-] as const
-
-/**
- * The live site renders these four counters as "0+" — they have never been
- * filled in. Supply the numbers here and the section switches itself on.
- * TODO: client to provide.
- */
-export const counters: { label: string; value: number | null }[] = [
-  { label: 'Happy Clients', value: null },
-  { label: 'Projects Done', value: null },
-  { label: 'Expert Team', value: null },
-  { label: 'Years of Experience', value: 25 },
+  { label: 'Compliance', href: '/compliance/' },
+  { label: 'Projects', href: '/projects/' },
+  { label: 'Insights', href: '/insights/' },
+  { label: 'Contact', href: '/contact/' },
 ]
 
+export const footerNav = [
+  {
+    heading: 'Products',
+    links: [
+      { label: 'Platino RECD', href: '/products/recd/' },
+      { label: 'Platino RATS®', href: '/products/rats/' },
+      { label: 'OBD & Monitoring', href: '/products/obd-monitoring/' },
+      { label: 'All products', href: '/products/' },
+    ],
+  },
+  {
+    heading: 'Services',
+    links: [
+      { label: 'Installation', href: '/services/installation/' },
+      { label: 'Testing', href: '/services/testing/' },
+      { label: 'Commissioning', href: '/services/commissioning/' },
+      { label: 'AMC & Support', href: '/services/amc/' },
+    ],
+  },
+  {
+    heading: 'Company',
+    links: [
+      { label: 'About ZAN-F', href: '/about/' },
+      { label: 'Compliance', href: '/compliance/' },
+      { label: 'Projects', href: '/projects/' },
+      { label: 'Insights', href: '/insights/' },
+      { label: 'Client Portal', href: '/portal/' },
+    ],
+  },
+] as const
+
+/* -------------------------------------------------------------------------- */
+/*  Credentials                                                               */
+/* -------------------------------------------------------------------------- */
+
+export const certifications = [
+  {
+    short: 'ARAI',
+    full: 'Automotive Research Association of India',
+    note: 'Type-approval testing',
+  },
+  {
+    short: 'ICAT',
+    full: 'International Centre for Automotive Technology',
+    note: 'Type-approval testing',
+  },
+  {
+    short: 'CPCB',
+    full: 'Central Pollution Control Board',
+    note: 'Type-approved device',
+  },
+] as const
+
+export const testNote =
+  'The RECD is tested under the ISO 8178 5-mode D2 cycle by ARAI and ICAT.'
+
+export const credentials = [
+  { label: 'Authorized Platino Dealer', mono: null },
+  { label: 'CPCB Type-Approved device', mono: null },
+  { label: 'ARAI · ICAT tested', mono: 'ISO 8178 D2' },
+  { label: 'Coverage', mono: site.recdRange },
+] as const
+
 /**
- * The clientele logo wall, in the same order as the live site.
- *
- * Sources are the client's own files (zanf.in/wp-content/uploads/2024/09/c1–c20),
- * processed by scripts/prepare-logos.mjs into transparent alpha masks so they
- * sit on the dark canvas without white boxes. Each name was verified by eye
- * against its image. The trademark notice below the wall covers all of them.
- *
- * To add one: drop the source into /public/media/clients/, add it to NAMES in
- * the script, re-run it, and paste the new entry here.
+ * Only figures ZAN-F has published. `value: null` removes the tile — the old
+ * site rendered these as "0+", which reads worse than not claiming anything.
+ * TODO: client to supply installations completed and team size.
+ */
+export const stats: {
+  label: string
+  value: string | null
+  suffix?: string
+  note?: string
+}[] = [
+  {
+    label: 'Years in DG services',
+    value: '25',
+    suffix: '+',
+    note: 'Engineering, service and overhaul',
+  },
+  {
+    label: 'kVA range covered',
+    value: '25–10,000',
+    note: 'RECD through RATS®',
+  },
+  {
+    label: 'Back pressure added',
+    value: '0.0',
+    suffix: ' kPa',
+    note: 'As per ARAI test report',
+  },
+  {
+    label: 'Particulate reduction',
+    value: '>90',
+    suffix: '%',
+    note: 'Per type-approval documentation',
+  },
+  { label: 'RECDs installed', value: null },
+]
+
+/* -------------------------------------------------------------------------- */
+/*  Homepage                                                                  */
+/* -------------------------------------------------------------------------- */
+
+export const hero = {
+  eyebrow: 'Authorized Platino RECD dealer & turnkey SITC partner',
+  headline: ['Compliance you', 'can measure.', 'Power you can trust.'],
+  sub: `ZAN-F supplies, installs, tests and commissions CPCB Type-Approved Platino Retrofit Emission Control Devices for diesel generators from ${site.recdRange} — turnkey, audit-ready, on schedule.`,
+  primary: { label: 'Get a site assessment', href: '/contact/' },
+  secondary: { label: 'Explore Platino RECD', href: '/products/recd/' },
+} as const
+
+export const differences = [
+  {
+    title: 'Authorized Platino partnership',
+    body: 'Genuine certified hardware with manufacturer-backed warranty and support — not a look-alike device sourced from an unnamed workshop.',
+    icon: 'badge-check',
+  },
+  {
+    title: 'Turnkey execution',
+    body: 'One engineering partner from site survey to commissioning. One contract, one point of accountability, no gap between supply and install.',
+    icon: 'route',
+  },
+  {
+    title: 'Compliance-first',
+    body: 'Testing and documentation are treated as deliverables, not afterthoughts. You are handed a pack an inspector can read.',
+    icon: 'file-check',
+  },
+  {
+    title: 'Engineering-led delivery',
+    body: `Correct sizing, correct mounting, correct back-pressure. ${site.yearsInDgServices} years on DG plant decides what gets specified.`,
+    icon: 'ruler',
+  },
+] as const
+
+export const businesses = [
+  {
+    kicker: 'Business one',
+    title: 'Platino RECD & RATS®',
+    body: 'Certified emission-control hardware for diesel generators — type-approved, endurance tested, and specified to the engine it will sit on.',
+    points: [
+      'CPCB type-approved devices',
+      'RECD 25 – 1000 kVA · RATS® above 1000 kVA',
+      'Zero added back pressure per ARAI test report',
+    ],
+    cta: { label: 'Explore products', href: '/products/' },
+  },
+  {
+    kicker: 'Business two',
+    title: 'Installation, Testing & Commissioning',
+    body: 'A certified device is half of compliance. ZAN-F executes the other half — survey, erection, verification, and a documented handover.',
+    points: [
+      'Site survey, back-pressure calculation, sizing',
+      'Mechanical erection, exhaust integration, OBD wiring',
+      'Test reports, commissioning pack, AMC',
+    ],
+    cta: { label: 'Explore ITC services', href: '/services/' },
+  },
+] as const
+
+export const workingPrinciple = {
+  eyebrow: 'How a RECD works',
+  heading: 'Two catalysts. No moving parts.',
+  body: 'Exhaust enters through a diffuser and passes into the Fuel Oxidation Catalyst, which converts carbon monoxide and hydrocarbons. The Catalytic Soot Trap then captures and removes particulate matter before cleaner gas leaves the outlet chamber. There is nothing to spin, nothing to dose and nothing to replace on a schedule.',
+  stages: [
+    {
+      code: '01',
+      title: 'Diffuser',
+      body: 'Raw exhaust is spread evenly across the catalyst face so the whole substrate does work, not just its centre.',
+    },
+    {
+      code: '02',
+      title: 'FOC — Fuel Oxidation Catalyst',
+      body: 'Carbon monoxide and unburnt hydrocarbons are oxidised as they pass through the coated substrate.',
+    },
+    {
+      code: '03',
+      title: 'CST — Catalytic Soot Trap',
+      body: 'Particulate matter is captured and burnt off by carbon self-clean, so there is no filter to swap out.',
+    },
+    {
+      code: '04',
+      title: 'Outlet chamber',
+      body: 'Treated gas leaves through the outlet, with temperature and pressure taps either side for verification.',
+    },
+  ],
+} as const
+
+export const industries = [
+  {
+    name: 'Data centres',
+    body: 'Standby plant that is tested weekly and audited constantly.',
+    icon: 'server',
+  },
+  {
+    name: 'Hospitals',
+    body: 'Life-safety power that cannot be taken offline for long.',
+    icon: 'heart-pulse',
+  },
+  {
+    name: 'Manufacturing',
+    body: 'Continuous-duty sets under real load, often several per site.',
+    icon: 'factory',
+  },
+  {
+    name: 'IT parks',
+    body: 'Multi-tenant campuses with mixed ratings and shared exhaust routes.',
+    icon: 'building-2',
+  },
+  {
+    name: 'Commercial buildings',
+    body: 'Malls, hotels and offices with occupancy-critical backup.',
+    icon: 'store',
+  },
+  {
+    name: 'Infrastructure',
+    body: 'Projects, sites and rental fleets that must arrive compliant.',
+    icon: 'hard-hat',
+  },
+] as const
+
+export const closing = {
+  heading: 'Need to make your DG set compliant?',
+  body: 'Get expert guidance on RECD selection, installation, testing and commissioning. Tell us the rating and the site — we will tell you what the job actually involves.',
+  primary: { label: 'Book a site assessment', href: '/contact/' },
+  secondary: { label: 'WhatsApp an engineer' },
+} as const
+
+/* -------------------------------------------------------------------------- */
+/*  Trust                                                                     */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * TODO: no genuine customer testimonials have been supplied. The section hides
+ * itself while this array is empty — nothing here is written for effect.
+ */
+export const testimonials: {
+  quote: string
+  name: string
+  role: string
+  company: string
+}[] = []
+
+/**
+ * The clientele wall, carried over from the live site in the same order.
+ * Sources are the client's own uploads, processed by scripts/prepare-logos.mjs
+ * into transparent masks. The trademark notice below the wall covers all of
+ * them. TODO: confirm the client holds permission to display each mark.
  */
 export const clients: { name: string; src: string }[] = [
   { name: 'GE', src: '/media/clients/prepared/ge.png' },
@@ -206,68 +407,14 @@ export const clients: { name: string; src: string }[] = [
   },
 ]
 
-export const services = [
-  {
-    title: 'Type Approved RECD & RATS',
-    body: 'Retrofit Emission Control Devices and Retrofit After Treatment Systems for diesel generators across the full 15 KVA to 10 MW range.',
-    icon: 'filter',
-  },
-  {
-    title: 'DG Sets, Parts & Service',
-    body: 'Supply of diesel generator sets, genuine spares and on-site service by engineers who have worked on DG plant for over 25 years.',
-    icon: 'settings',
-  },
-  {
-    title: 'DG Set AMC & Overhauling',
-    body: 'Annual maintenance contracts and full overhauls that keep generator sets available, efficient and within emission limits.',
-    icon: 'wrench',
-  },
-  {
-    title: 'Electrical Panel Boards',
-    body: 'Design and manufacture of control, distribution and synchronisation panels built to the load requirements of the installation.',
-    icon: 'cpu',
-  },
-  {
-    title: 'DG Set Rental with RECD',
-    body: 'Rental generator sets supplied already fitted with a type-approved RECD, so hired power arrives compliant.',
-    icon: 'truck',
-  },
-  {
-    title: 'Silencers & Exhausts',
-    body: 'Manufacture of silencers and exhaust systems engineered for the back-pressure and acoustic requirements of the site.',
-    icon: 'audio-waveform',
-  },
-] as const
-
-export const features = {
-  eyebrow: 'RECD & RATS Features',
-  note: 'Our RECD is tested under the required ISO 8178 5-mode D2 cycle from ARAI & ICAT',
-  items: [
-    { title: 'Zero Back Pressure', note: 'As per ARAI test report' },
-    { title: 'Long Device Life', note: 'Endurance tested' },
-    { title: 'Low Maintenance', note: null },
-    { title: 'Carbon Self Clean Technology', note: null },
-    { title: 'Custom Design', note: null },
-    { title: 'Static Operation', note: 'No moving parts' },
-    { title: 'No By-product Generation', note: null },
-  ],
-} as const
-
-export const certifications = [
-  { short: 'ARAI', full: 'Automotive Research Association of India' },
-  { short: 'ICAT', full: 'International Centre For Automotive Technology' },
-  { short: 'CPCB', full: 'Central Pollution Control Board' },
-] as const
-
-export const closing = {
-  heading:
-    'Leading the way with innovative, eco-friendly solutions for regulatory compliance',
-  body: 'Leveraging expertise in emission control, ZAN-F Power Systems delivers innovative, sustainable solutions that surpass regulatory standards, reducing environmental impact effectively.',
-  cta: 'Get in Touch',
-} as const
-
 export const trademarkNotice =
   'All trademarks used are the property of their respective companies, and their use here does not imply endorsement. All company products and service names used in this website are for identification purposes only.'
+
+export const dealerNotice = `Platino®, RECD, RATS® and related marks belong to ${site.manufacturer}. ZAN-F is an authorized dealer and reseller, and provides installation, testing, commissioning and maintenance services. ZAN-F does not manufacture these devices.`
+
+/* -------------------------------------------------------------------------- */
+/*  Media                                                                     */
+/* -------------------------------------------------------------------------- */
 
 export const media = {
   installedUnit: {
@@ -297,7 +444,29 @@ export const media = {
   },
 } as const
 
-/** Indian states and union territories, for the contact form's state field. */
+/* -------------------------------------------------------------------------- */
+/*  Form options                                                              */
+/* -------------------------------------------------------------------------- */
+
+export const requirementTypes = [
+  { value: 'product', label: 'Product — RECD / RATS® supply' },
+  { value: 'sitc', label: 'SITC — supply, installation, testing, commissioning' },
+  { value: 'amc', label: 'AMC — maintenance and support' },
+  { value: 'other', label: 'Something else' },
+] as const
+
+export const dgRatings = [
+  'Below 25 kVA',
+  '25 – 125 kVA',
+  '126 – 250 kVA',
+  '251 – 500 kVA',
+  '501 – 1000 kVA',
+  '1001 – 2000 kVA',
+  'Above 2000 kVA',
+  'Multiple ratings / fleet',
+  'Not sure yet',
+] as const
+
 export const indianStates = [
   'Andhra Pradesh',
   'Arunachal Pradesh',

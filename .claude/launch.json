@@ -12,6 +12,12 @@
       "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
       "runtimeArgs": ["node_modules/next/dist/bin/next", "start", "--port", "3001"],
       "port": 3001
+    },
+    {
+      "name": "zanf-review",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "start", "--port", "3007"],
+      "port": 3007
     }
   ]
 }

@@ -1,34 +1,45 @@
-import Link from 'next/link'
-import { MessageCircle, Phone } from 'lucide-react'
-import { contact } from '@/content/site'
+'use client'
 
-/** Call · WhatsApp · Quote. Mobile only — the header carries these on desktop. */
+import { MessageCircle, Phone, SquarePen } from 'lucide-react'
+import { useQuote } from './Quote'
+import { contact, whatsappLink } from '@/content/site'
+
+/**
+ * Call · WhatsApp · Quote, pinned to the bottom on phones only.
+ *
+ * The desktop WhatsApp float is hidden below `lg` for exactly this reason —
+ * two floating actions on a 360px screen is one too many.
+ */
 export default function MobileStickyCTA() {
+  const { open } = useQuote()
+
+  const item =
+    'flex flex-1 flex-col items-center justify-center gap-1 py-2.5 text-[0.6875rem] font-medium'
+
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-[var(--scrim)] backdrop-blur-xl sm:hidden">
-      <div className="grid grid-cols-3">
-        <a
-          href={`tel:${contact.phoneHref}`}
-          className="flex items-center justify-center gap-2 py-3.5 text-sm text-mid"
-        >
-          <Phone size={15} strokeWidth={1.5} />
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-steel-200 bg-air/95 backdrop-blur-md lg:hidden">
+      <div className="flex items-stretch divide-x divide-[var(--steel-200)] pb-[env(safe-area-inset-bottom)]">
+        <a href={`tel:${contact.phoneHref}`} className={`${item} text-ink`}>
+          <Phone size={17} strokeWidth={1.75} aria-hidden="true" />
           Call
         </a>
         <a
-          href={`https://wa.me/${contact.whatsapp}`}
+          href={whatsappLink()}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 border-x border-hairline py-3.5 text-sm text-mid"
+          className={`${item} text-ink`}
         >
-          <MessageCircle size={15} strokeWidth={1.5} />
+          <MessageCircle size={17} strokeWidth={1.75} aria-hidden="true" />
           WhatsApp
         </a>
-        <Link
-          href="/contact-us/"
-          className="flex items-center justify-center py-3.5 text-sm font-medium text-hi"
+        <button
+          type="button"
+          onClick={() => open('Mobile sticky bar — Quote')}
+          className={`${item} bg-[var(--emission-600)] text-white`}
         >
-          Get a Quote
-        </Link>
+          <SquarePen size={17} strokeWidth={1.75} aria-hidden="true" />
+          Get a quote
+        </button>
       </div>
     </div>
   )

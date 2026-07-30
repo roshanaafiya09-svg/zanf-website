@@ -1,68 +1,60 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { Play } from 'lucide-react'
 
 /**
- * Click-to-play only. `preload="none"` means nothing is fetched until the
- * visitor asks for it — this clip is 8.4 MB and must never autoplay.
+ * Click to play. `preload="none"` and the `<video>` element is not mounted at
+ * all until the poster is clicked, so the 8.4 MB explainer costs zero bytes to
+ * anybody who does not ask for it.
  */
 export default function VideoBlock({
   src,
   poster,
   label,
-  alt,
 }: {
   src: string
   poster: string
   label: string
-  alt: string
 }) {
-  const [started, setStarted] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  function start() {
-    setStarted(true)
-    requestAnimationFrame(() => videoRef.current?.play())
-  }
+  const [playing, setPlaying] = useState(false)
 
   return (
-    <figure className="relative border border-hairline">
-      <div className="relative aspect-video">
-        {started ? (
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
-            src={src}
-            poster={poster}
-            controls
-            playsInline
-            preload="none"
+    <figure className="overflow-hidden rounded-[8px] border border-steel-200 bg-white">
+      {playing ? (
+        <video
+          src={src}
+          poster={poster}
+          controls
+          autoPlay
+          playsInline
+          preload="none"
+          className="aspect-video w-full bg-carbon"
+        >
+          <track kind="captions" />
+        </video>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setPlaying(true)}
+          className="group relative block aspect-video w-full overflow-hidden"
+          aria-label={`Play: ${label}`}
+        >
+          <Image
+            src={poster}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover"
           />
-        ) : (
-          <>
-            <Image
-              src={poster}
-              alt={alt}
-              fill
-              sizes="(min-width: 1024px) 60vw, 100vw"
-              className="object-cover"
-            />
-            <button
-              type="button"
-              onClick={start}
-              className="group absolute inset-0 grid place-items-center bg-[var(--media-veil)] transition-colors duration-200 hover:bg-transparent"
-            >
-              <span className="flex h-16 w-16 items-center justify-center rounded-full border border-hi/40 bg-[var(--scrim)] text-hi backdrop-blur-sm transition-colors duration-200 group-hover:border-accent group-hover:text-accent">
-                <Play size={17} strokeWidth={1.5} fill="currentColor" />
-              </span>
-              <span className="sr-only">Play — {label}</span>
-            </button>
-          </>
-        )}
-      </div>
-      <figcaption className="eyebrow border-t border-hairline px-5 py-3.5">
+          <span className="absolute inset-0 bg-[rgb(14_21_18/0.35)] transition-colors duration-200 group-hover:bg-[rgb(14_21_18/0.2)]" />
+          <span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[var(--emission-600)] text-white transition-transform duration-200 group-hover:scale-105">
+            <Play size={22} strokeWidth={2} fill="currentColor" aria-hidden="true" />
+          </span>
+        </button>
+      )}
+      <figcaption className="mono border-t border-steel-200 px-5 py-3 text-[0.6875rem] uppercase tracking-[0.12em] text-ink-400">
         {label}
       </figcaption>
     </figure>

@@ -1,29 +1,42 @@
-﻿'use client'
+'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ChevronDown, Menu, X, ArrowUpRight } from 'lucide-react'
-import ThemeToggle from './ThemeToggle'
-import { nav, notifications, site } from '@/content/site'
+import { ChevronDown, Menu, Phone, X } from 'lucide-react'
+import { QuoteButton } from './Quote'
+import { contact, nav, site, type NavItem } from '@/content/site'
+
+function Wordmark() {
+  // TODO: replace with the client's logo as SVG. Until then the wordmark is
+  // set in Archivo rather than shipping a low-resolution PNG.
+  return (
+    <span className="font-display text-[1.35rem] font-bold tracking-[-0.04em] text-ink">
+      ZAN
+      <span className="text-[var(--emission-600)]">-</span>F
+    </span>
+  )
+}
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [notifOpen, setNotifOpen] = useState(false)
+  const [openMenu, setOpenMenu] = useState<string | null>(null)
+  const [mobileSection, setMobileSection] = useState<string | null>(null)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pathname = usePathname()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close everything on navigation, and lock the body while the panel is open.
   useEffect(() => {
     setMenuOpen(false)
-    setNotifOpen(false)
+    setOpenMenu(null)
+    setMobileSection(null)
   }, [pathname])
 
   useEffect(() => {
@@ -37,144 +50,213 @@ export default function Header() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setMenuOpen(false)
-        setNotifOpen(false)
+        setOpenMenu(null)
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  const isActive = (item: NavItem) =>
+    item.href === '/'
+      ? pathname === '/'
+      : pathname.startsWith(item.href.replace(/\/$/, ''))
+
+  // A short close delay keeps the dropdown reachable across the gap between
+  // the trigger and the panel.
+  const scheduleClose = () => {
+    closeTimer.current = setTimeout(() => setOpenMenu(null), 120)
+  }
+  const cancelClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+  }
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled || menuOpen
-          ? 'border-b border-hairline bg-[var(--scrim)] backdrop-blur-xl'
-          : 'border-b border-transparent'
+      className={`sticky top-0 z-50 border-b bg-air/90 backdrop-blur-md transition-colors duration-200 ${
+        scrolled || menuOpen ? 'border-steel-200' : 'border-transparent'
       }`}
     >
-      <div className="shell flex h-[4.5rem] items-center justify-between gap-6">
-        <Link
-          href="/"
-          className="font-display text-lg font-semibold tracking-[-0.03em] text-hi"
-        >
-          {site.name}
+      <div className="shell flex h-16 items-center justify-between gap-6 lg:h-[4.5rem]">
+        <Link href="/" aria-label={`${site.name} — home`} className="shrink-0">
+          <Wordmark />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Main">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={pathname === item.href ? 'page' : undefined}
-              className={`text-sm transition-colors duration-200 hover:text-hi ${
-                pathname === item.href ? 'text-hi' : 'text-mid'
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav
+          className="hidden items-center gap-1 lg:flex"
+          aria-label="Main navigation"
+        >
+          {nav.map((item) =>
+            item.children ? (
+              <div
+                key={item.href}
+                className="relative"
+                onMouseEnter={() => {
+                  cancelClose()
+                  setOpenMenu(item.label)
+                }}
+                onMouseLeave={scheduleClose}
+              >
+                <button
+                  type="button"
+                  onClick={() =>
+                    setOpenMenu(openMenu === item.label ? null : item.label)
+                  }
+                  aria-expanded={openMenu === item.label}
+                  className={`flex items-center gap-1.5 rounded-[4px] px-3 py-2 text-sm transition-colors duration-200 hover:text-ink ${
+                    isActive(item) ? 'text-ink' : 'text-ink-600'
+                  }`}
+                >
+                  {item.label}
+                  <ChevronDown
+                    size={14}
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                    className={`transition-transform duration-200 ${
+                      openMenu === item.label ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
 
-          <div
-            className="relative"
-            onMouseEnter={() => setNotifOpen(true)}
-            onMouseLeave={() => setNotifOpen(false)}
-          >
-            <button
-              type="button"
-              onClick={() => setNotifOpen((v) => !v)}
-              aria-expanded={notifOpen}
-              aria-haspopup="true"
-              className="flex items-center gap-1.5 text-sm text-mid transition-colors duration-200 hover:text-hi"
-            >
-              Government Notification
-              <ChevronDown
-                size={14}
-                strokeWidth={1.5}
-                className={`transition-transform duration-200 ${
-                  notifOpen ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
-
-            {notifOpen && (
-              <div className="absolute right-0 top-full w-80 pt-3">
-                <div className="overflow-hidden border border-hairline bg-surface-1 p-1.5">
-                  {notifications.map((n) => (
-                    <a
-                      key={n.href}
-                      href={n.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-start justify-between gap-3 px-3 py-2.5 transition-colors duration-200 hover:bg-surface-2"
-                    >
-                      <span>
-                        <span className="block text-sm text-hi">{n.label}</span>
-                        <span className="eyebrow block">{n.scope}</span>
-                      </span>
-                      <ArrowUpRight
-                        size={14}
-                        strokeWidth={1.5}
-                        className="mt-0.5 shrink-0 text-lo"
-                      />
-                    </a>
-                  ))}
-                </div>
+                {openMenu === item.label && (
+                  <div className="absolute left-1/2 top-full w-[22rem] -translate-x-1/2 pt-3">
+                    <div className="overflow-hidden rounded-[8px] border border-steel-200 bg-white p-1.5 shadow-[0_12px_32px_-12px_rgb(16_32_26/0.18)]">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className="block rounded-[6px] px-3.5 py-3 transition-colors duration-200 hover:bg-steel-100"
+                        >
+                          <span className="block text-sm font-medium text-ink">
+                            {child.label}
+                          </span>
+                          <span className="mono mt-0.5 block text-[0.6875rem] uppercase tracking-[0.1em] text-ink-400">
+                            {child.note}
+                          </span>
+                        </Link>
+                      ))}
+                      <Link
+                        href={item.href}
+                        className="block rounded-[6px] px-3.5 py-2.5 text-sm text-[var(--emission-700)] transition-colors duration-200 hover:bg-steel-100"
+                      >
+                        All {item.label.toLowerCase()} →
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={pathname === item.href ? 'page' : undefined}
+                className={`rounded-[4px] px-3 py-2 text-sm transition-colors duration-200 hover:text-ink ${
+                  isActive(item) ? 'text-ink' : 'text-ink-600'
+                }`}
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </nav>
 
-        <div className="flex items-center gap-2.5">
-          <ThemeToggle />
-          <Link
-            href="/contact-us/"
-            className="hidden rounded-[2px] bg-cta px-5 py-2.5 text-sm font-medium text-cta-ink transition-colors duration-200 hover:bg-accent hover:text-[#1a0f06] sm:inline-flex"
+        <div className="flex items-center gap-2">
+          <a
+            href={`tel:${contact.phoneHref}`}
+            className="mono hidden items-center gap-2 rounded-[4px] border border-steel-200 px-3.5 py-2.5 text-[0.8125rem] text-ink transition-colors hover:border-[var(--emission-600)] xl:inline-flex"
           >
-            Get Started
-          </Link>
+            <Phone size={13} strokeWidth={1.75} aria-hidden="true" />
+            {contact.phoneDisplay}
+          </a>
+
+          <QuoteButton source="Header — Get a quote" className="hidden sm:inline-flex">
+            Get a quote
+          </QuoteButton>
+
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            className="grid h-9 w-9 place-items-center rounded-full border border-hairline text-hi lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-[4px] border border-steel-200 text-ink lg:hidden"
           >
             {menuOpen ? (
-              <X size={16} strokeWidth={1.5} />
+              <X size={17} strokeWidth={1.75} />
             ) : (
-              <Menu size={16} strokeWidth={1.5} />
+              <Menu size={17} strokeWidth={1.75} />
             )}
           </button>
         </div>
       </div>
 
       {menuOpen && (
-        <div className="max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-hairline bg-[var(--scrim)] backdrop-blur-xl lg:hidden">
-          <div className="shell py-6">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block border-b border-hairline py-4 font-display text-2xl tracking-[-0.03em] text-hi"
-              >
-                {item.label}
-              </Link>
-            ))}
-
-            <p className="eyebrow pt-7">Government Notification</p>
-            <div className="pt-2">
-              {notifications.map((n) => (
-                <a
-                  key={n.href}
-                  href={n.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 border-b border-hairline py-3 text-sm text-mid"
+        <div className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-steel-200 bg-air lg:hidden">
+          <div className="shell py-4">
+            {nav.map((item) =>
+              item.children ? (
+                <div key={item.href} className="border-b border-steel-200">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setMobileSection(
+                        mobileSection === item.label ? null : item.label
+                      )
+                    }
+                    aria-expanded={mobileSection === item.label}
+                    className="flex w-full items-center justify-between py-4 text-left font-display text-xl tracking-[-0.03em] text-ink"
+                  >
+                    {item.label}
+                    <ChevronDown
+                      size={18}
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                      className={`transition-transform duration-200 ${
+                        mobileSection === item.label ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  {mobileSection === item.label && (
+                    <div className="pb-4">
+                      <Link
+                        href={item.href}
+                        className="block py-2 text-sm text-[var(--emission-700)]"
+                      >
+                        All {item.label.toLowerCase()}
+                      </Link>
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className="block py-2 text-sm text-ink-600"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block border-b border-steel-200 py-4 font-display text-xl tracking-[-0.03em] text-ink"
                 >
-                  {n.label}
-                  <ArrowUpRight size={14} strokeWidth={1.5} className="shrink-0" />
-                </a>
-              ))}
+                  {item.label}
+                </Link>
+              )
+            )}
+
+            <div className="flex flex-col gap-3 pt-6">
+              <QuoteButton source="Mobile menu — Get a quote">
+                Get a quote
+              </QuoteButton>
+              <a
+                href={`tel:${contact.phoneHref}`}
+                className="mono inline-flex items-center justify-center gap-2 rounded-[4px] border border-steel-200 px-6 py-3.5 text-sm text-ink"
+              >
+                <Phone size={14} strokeWidth={1.75} aria-hidden="true" />
+                {contact.phoneDisplay}
+              </a>
             </div>
           </div>
         </div>

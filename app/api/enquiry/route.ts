@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { enquirySchema } from '@/lib/enquiry'
+import { enquirySchema, requirementLabels } from '@/lib/enquiry'
 import { contact } from '@/content/site'
 
 export async function POST(request: Request) {
@@ -25,10 +25,23 @@ export async function POST(request: Request) {
     // reporting success and silently dropping an enquiry.
     // TODO: set RESEND_API_KEY and ENQUIRY_FROM in the deployment environment.
     console.error('RESEND_API_KEY is not set — enquiry was not delivered')
-    return NextResponse.json({ error: 'Email is not configured' }, { status: 503 })
+    return NextResponse.json(
+      { error: 'Email is not configured' },
+      { status: 503 }
+    )
   }
 
-  const { name, email, company, state, mobile, message } = parsed.data
+  const {
+    name,
+    email,
+    company,
+    phone,
+    dgRating,
+    requirement,
+    state,
+    message,
+    source,
+  } = parsed.data
 
   try {
     const resend = new Resend(apiKey)
@@ -36,13 +49,18 @@ export async function POST(request: Request) {
       from: process.env.ENQUIRY_FROM ?? 'ZAN-F Website <onboarding@resend.dev>',
       to: [...contact.emails],
       replyTo: email,
-      subject: `Website enquiry — ${name}${company ? ` (${company})` : ''}`,
+      subject: `${requirementLabels[requirement].split(' — ')[0]} enquiry — ${name}${
+        company ? ` (${company})` : ''
+      }`,
       text: [
         `Name: ${name}`,
-        `Email: ${email}`,
         `Company: ${company || '—'}`,
-        `State: ${state}`,
-        `Mobile: ${mobile}`,
+        `Phone: ${phone}`,
+        `Email: ${email}`,
+        `DG rating: ${dgRating || '—'}`,
+        `Requirement: ${requirementLabels[requirement]}`,
+        `State: ${state || '—'}`,
+        `Came from: ${source || '—'}`,
         '',
         message || '(no message)',
       ].join('\n'),
