@@ -8,5 +8,6 @@ out
 next-env.d.ts
 .DS_Store
 
-# Machine-local tool settings
-.claude/settings.local.json
+# Machine-local tool settings. launch.json hard-codes absolute paths to this
+# machine's node binary, so it is useless — and misleading — to anyone else.
+.claude/
