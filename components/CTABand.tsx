@@ -26,7 +26,7 @@ export default function CTABand({
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
             <GradientRule width="w-16" />
-            <h2 className="display mt-6 text-[1.9rem] sm:text-[2.4rem] lg:text-[2.9rem]">
+            <h2 className="display display-lg mt-6 text-[1.9rem] sm:text-[2.4rem] lg:text-[2.9rem]">
               {heading}
             </h2>
             <p className="lede mt-5 max-w-xl">{body}</p>

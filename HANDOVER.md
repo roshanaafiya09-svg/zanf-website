@@ -22,8 +22,25 @@ only on compliance copy.
 carbon → emission → air. Under the H1, between sections, and as the spine of the
 four-step ITC timeline where it doubles as the progress indicator.
 
-**Type.** Archivo (display), Inter (body), IBM Plex Mono (every figure, unit,
-certificate number, spec cell and section eyebrow, without exception).
+**Type.** Host Grotesk (display), Instrument Sans (body), IBM Plex Mono (every
+figure, unit, certificate number, spec cell and section eyebrow, without
+exception).
+
+The first two replaced Archivo and Inter. Inter is the most-deployed UI face on
+the web — excellent and invisible, and "the same font as every SaaS dashboard" is
+not what a premium industrial site wants. Host Grotesk is tighter and sharper
+than Archivo, without the blocky evenness that makes heavy Archivo read as a
+template. Plex Mono stays: it was the strongest part of the existing system.
+
+**Tracking is graded by size, not fixed** — `.display`, `.display-lg`,
+`.display-xl` at −0.016em / −0.028em / −0.038em, with weights 600 / 700 / 800.
+One fixed tracking value across a whole scale is the commonest reason a good
+typeface looks cheap: card headings come out cramped and hero headlines come out
+loose. The hero headline is also fluid below `sm`
+(`clamp(1.9rem, 7.4vw, 2.35rem)`) because its line breaks are written rather than
+wrapped and each sits in its own `overflow: hidden` mask — a size that lets
+"Power you can trust." wrap turns a deliberate three-line composition into four.
+Verified intact at 320, 360 and desktop.
 
 **The theme toggle is gone.** Precision Air is a light identity with dark
 punctuation; maintaining a mirrored dark theme across twenty pages would have
@@ -110,38 +127,61 @@ is the field that makes the second business line measurable.
 
 ## The logo
 
-`Zanf Logo HD.png` is now on the site, at the top of the homepage hero.
+The mark is in the header, top-left, on every page — the conventional place, and
+where the reference the client supplied puts it.
 
-**What the file actually is.** Not a logo asset — a presentation render. The mark
-is 3D brushed-metal lettering photographed on a dark textured panel, 1691 × 608,
-with bevels, drop shadows and a lighting gradient baked into the pixels. There is
-no vector and no usable alpha.
+**What the source file is.** `Zanf Logo HD.png` is not a logo asset but a
+presentation render: 3D brushed-metal lettering photographed on a dark textured
+panel, 1691 × 608, with bevels, drop shadows and a lighting gradient baked into
+the pixels. No vector, no usable alpha. It cannot go on a light header as-is.
 
-**Two things were tried and rejected**, both recorded in
-`scripts/prepare-brand-logo.mjs`:
+**What was done instead: the monogram was traced to vector.**
+`scripts/trace-monogram.mjs` isolates the sigma mark by hue — "is this pixel
+green, blue, or neither" — which the letter faces answer unambiguously, then
+cleans the mask (median to kill anti-aliasing spurs, a wide blur and low
+threshold to close the pinholes the bevel leaves) and runs potrace over it. The
+result is `public/media/zanf-monogram.svg`: 8 KB, genuinely transparent (52% of
+pixels), filled flat in the recovered brand colours rather than the metallic
+gradient. Flat is what survives at 32px and what works on a light surface.
 
-- *Keying the panel out to transparency.* Fails, and not for want of tuning: the
-  letter extrusions are near-black, and saturation is meaningless at that
-  luminance, so drop shadows survive the key at full opacity while the panel
-  leaks through as a translucent veil. 37% of pixels ended up at partial alpha.
-  There is no threshold that separates "dark panel" from "dark bevel" — they are
-  the same pixels.
-- *Patching out the four-point sparkle* in the bottom-right corner. The sparkle
-  overlaps the right margin of "SYSTEMS", so cropping it clips the final letter,
-  and a colour-sampled patch leaves a visible rectangle against the panel's
-  gradient. The artwork therefore ships unmodified apart from being resized to
-  1200px wide. At display size the sparkle reads as a highlight on a photographed
-  plate.
+Note why this succeeded where keying the full lock-up failed. That attempt had to
+separate a dark panel from dark 3D bevels, which are the same pixels — 37% of the
+image came out at partial alpha, leaving the panel as a visible veil. Hue is a
+much easier question, and only the monogram needed answering.
 
-**So it is used only on carbon**, presented as a *mounted plate* with a hairline
-and an 8px corner — which suits a site whose entire type treatment is equipment
-lettering. It is the first thing in the hero, above the eyebrow: 240px wide on a
-phone, 336px on desktop, served as a 15 KB AVIF.
+**`components/Logo.tsx`** composes the traced monogram with the wordmark and
+strapline as *real text* — so it is the accessible name for the home link
+("ZAN-F Power Systems — home"), stays sharp at any zoom, and is set in the same
+display face as the rest of the site. It takes a `tone` prop: brand blue on
+light (5.6:1), the lighter `--brand-blue-300` on carbon (8.1:1). Both halves of
+the monogram clear 3:1 against both surfaces as non-text graphics.
 
-**The header and footer keep the typographic wordmark.** A dark plate at 40px on
-the light header would read as a sticker and the strapline would be illegible.
-The footer now carries "Power Systems" beneath the wordmark in the logo's own
-blue (7.95:1 on carbon), which is the one place that colour is echoed.
+**The favicon is now the mark**, not a set letter: `app/icon.png` (32px) and
+`app/apple-icon.png` (180px), generated from the same SVG by the same script.
+The `next/og` icon routes they replace are gone.
+
+**The hero no longer carries a copy.** An earlier pass mounted the full render as
+a plate at the top of the hero; with a real logo in the header that was the same
+mark twice on one screen.
+
+**Brand colours recovered from the artwork** — sampled from the letter faces
+only, so bevels and shadows do not skew the average:
+
+| | Recovered | Site token |
+|---|---|---|
+| Green | `#1F8F57` | `--emission-500: #0E8A5F` |
+| Blue | `#1D6B96` | added as `--brand-blue` |
+
+The green came back within a hair of the palette the brief specified — useful
+confirmation that Precision Air is already ZAN-F's brand green rather than an
+imposition.
+
+**Still worth supplying: the client's own vector.** The trace is faithful in
+shape, but its edges carry a slight organic wobble from the anti-aliased source.
+It is invisible at header size and would show if the mark were ever set large.
+`public/media/zanf-logo-plate.png` (the full render, resized) is retained and
+used as the `Organization` / `LocalBusiness` schema logo, where the complete
+lock-up is what a knowledge panel wants.
 
 **Brand colours recovered from the artwork** — sampled from the letter faces
 only, so bevels and shadows do not skew the average:

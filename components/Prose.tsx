@@ -10,7 +10,10 @@ import type { ReactNode } from 'react'
  */
 export const mdxComponents = {
   h2: (props: { children?: ReactNode }) => (
-    <h2 className="display mt-14 text-[1.6rem] sm:text-[1.9rem]" {...props} />
+    <h2
+      className="display display-lg mt-14 text-[1.6rem] sm:text-[1.9rem]"
+      {...props}
+    />
   ),
   h3: (props: { children?: ReactNode }) => (
     <h3 className="display mt-10 text-xl" {...props} />

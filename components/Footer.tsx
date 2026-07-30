@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 import GradientRule from './GradientRule'
+import Logo from './Logo'
 import {
   certifications,
   contact,
@@ -23,15 +24,8 @@ export default function Footer() {
 
         <div className="grid gap-12 py-14 md:py-16 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-10">
           <div>
-            {/* The one place the logo's blue is echoed, under the wordmark
-                exactly as it sits in the lock-up. */}
-            <span className="block font-display text-[1.35rem] font-bold leading-none tracking-[-0.04em] text-air-ink">
-              ZAN<span className="text-[var(--emission-300)]">-</span>F
-            </span>
-            <span className="mono mt-1.5 block text-[0.6875rem] uppercase tracking-[0.22em] text-[var(--brand-blue-300)]">
-              Power Systems
-            </span>
-            <p className="mt-4 max-w-sm text-sm text-air-mid">
+            <Logo tone="dark" />
+            <p className="mt-5 max-w-sm text-sm text-air-mid">
               {site.description}
             </p>
 

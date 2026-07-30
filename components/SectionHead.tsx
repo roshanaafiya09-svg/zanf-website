@@ -37,7 +37,7 @@ export default function SectionHead({
       />
       <Heading
         className={`display mt-6 text-[1.9rem] sm:text-[2.4rem] lg:text-[3rem] ${
-          level === 1 ? 'lg:text-[3.5rem]' : ''
+          level === 1 ? 'display-xl lg:text-[3.5rem]' : 'display-lg'
         }`}
       >
         {heading}

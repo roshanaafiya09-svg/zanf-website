@@ -24,26 +24,16 @@ export default function Hero() {
 
       <div className="shell relative grid items-center gap-12 py-14 md:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-24">
         <div>
-          {/* The lock-up, mounted as a plate.
-              The supplied artwork is a render on its own dark panel, so it is
-              given a hairline and a corner and allowed to be a plate — which
-              suits a site whose whole type treatment is equipment lettering.
-              Pretending it floats would only draw attention to the panel edge. */}
-          <div className="rise mb-8 w-[15rem] overflow-hidden rounded-[6px] border border-hairline-dark-strong sm:w-[19rem] lg:w-[21rem]">
-            <Image
-              src={media.logoPlate.src}
-              alt={media.logoPlate.alt}
-              width={media.logoPlate.width}
-              height={media.logoPlate.height}
-              priority
-              sizes="(min-width: 1024px) 336px, (min-width: 640px) 304px, 240px"
-              className="h-auto w-full"
-            />
-          </div>
-
+          {/* The logo lives in the header now, where a visitor looks for it.
+              A second copy here was the same mark twice in one screen. */}
           <Eyebrow className="rise">{hero.eyebrow}</Eyebrow>
 
-          <h1 className="display mt-6 text-[2.35rem] sm:text-[3.1rem] lg:text-[3.9rem]">
+          {/* Fluid below sm. The headline's line breaks are written, not
+              wrapped, and each one sits in its own overflow-hidden mask — so a
+              size that lets "Power you can trust." wrap turns a deliberate
+              three-line composition into four. The clamp keeps every line
+              intact from 320px up. */}
+          <h1 className="display display-xl mt-6 text-[clamp(1.9rem,7.4vw,2.35rem)] sm:text-[3.1rem] lg:text-[3.9rem]">
             {hero.headline.map((line, i) => (
               <span key={line} className="line-mask">
                 <span style={{ animationDelay: `${0.08 + i * 0.09}s` }}>

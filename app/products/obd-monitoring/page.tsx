@@ -73,7 +73,7 @@ export default function ObdPage() {
             <p className="mono text-[0.6875rem] uppercase tracking-[0.14em] text-[var(--emission-700)]">
               Coming
             </p>
-            <h2 className="display mt-4 max-w-2xl text-[1.6rem] sm:text-[2rem]">
+            <h2 className="display display-lg mt-4 max-w-2xl text-[1.6rem] sm:text-[2rem]">
               {obd.portalNote}
             </h2>
             <Link

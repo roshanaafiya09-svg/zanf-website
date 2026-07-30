@@ -31,7 +31,7 @@ export default function PrivacyPage() {
       <section className="section">
         <div className="shell">
           <Prose>
-            <h2 className="display text-[1.6rem]">What we collect</h2>
+            <h2 className="display display-lg text-[1.6rem]">What we collect</h2>
             <p className="mt-5 text-[1.0625rem] leading-[1.7]">
               Only what you type into the enquiry form: your name, company,
               phone number, email address, DG rating, requirement type, state
@@ -39,14 +39,14 @@ export default function PrivacyPage() {
               so we know what you were reading when you asked.
             </p>
 
-            <h2 className="display mt-12 text-[1.6rem]">Why we collect it</h2>
+            <h2 className="display display-lg mt-12 text-[1.6rem]">Why we collect it</h2>
             <p className="mt-5 text-[1.0625rem] leading-[1.7]">
               To answer your enquiry. That is the only purpose. We do not sell
               or share these details with anyone, and we do not use them for
               marketing you have not asked for.
             </p>
 
-            <h2 className="display mt-12 text-[1.6rem]">Where it goes</h2>
+            <h2 className="display display-lg mt-12 text-[1.6rem]">Where it goes</h2>
             <p className="mt-5 text-[1.0625rem] leading-[1.7]">
               Enquiries are delivered by email to{' '}
               {contact.emails.join(' and ')} through a transactional email
@@ -55,14 +55,14 @@ export default function PrivacyPage() {
               not ours.
             </p>
 
-            <h2 className="display mt-12 text-[1.6rem]">Cookies</h2>
+            <h2 className="display display-lg mt-12 text-[1.6rem]">Cookies</h2>
             <p className="mt-5 text-[1.0625rem] leading-[1.7]">
               This website sets no tracking or advertising cookies. The Google
               Maps embed on the contact page is served by Google and is subject
               to Google’s own privacy policy.
             </p>
 
-            <h2 className="display mt-12 text-[1.6rem]">Your details</h2>
+            <h2 className="display display-lg mt-12 text-[1.6rem]">Your details</h2>
             <p className="mt-5 text-[1.0625rem] leading-[1.7]">
               Write to {contact.emails[0]} and we will tell you what we hold
               about you, correct it, or delete it.

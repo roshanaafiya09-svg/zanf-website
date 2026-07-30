@@ -100,8 +100,8 @@
   --color-hairline-dark: var(--hairline-dark);
   --color-hairline-dark-strong: var(--hairline-dark-strong);
 
-  --font-display: var(--font-archivo);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-display-family);
+  --font-sans: var(--font-sans-family);
   --font-mono: var(--font-plex-mono);
 }
 
@@ -122,9 +122,26 @@ body {
   color: var(--ink-600);
   font-family: var(--font-sans);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.62;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Kerning and contextual alternates on; no discretionary flourishes. */
+  font-feature-settings:
+    'kern' 1,
+    'liga' 1,
+    'calt' 1;
+}
+
+/* Paragraphs get the browser's orphan-avoidance where it exists. It costs
+   nothing and removes the single-word last line that makes body copy look
+   unconsidered. */
+p,
+li,
+dd,
+figcaption,
+blockquote {
+  text-wrap: pretty;
 }
 
 ::selection {
@@ -148,13 +165,35 @@ body {
    font. IBM Plex Mono carries every figure, unit and label without exception:
    that consistency is what makes the page read as instrumentation.          */
 
+/* Tracking is graded by size, not fixed.
+   Type set at 3.9rem needs to be pulled much tighter than the same face at
+   1.125rem — em-based tracking scales proportionally, but optical tracking has
+   to tighten faster than that. One fixed value across the whole scale is the
+   single most common reason a good typeface looks cheap: card headings come out
+   cramped and hero headlines come out loose.
+
+   .display     — card and inline headings, 1rem to 1.5rem
+   .display-lg  — section headings, 1.6rem to 3rem
+   .display-xl  — page and hero headlines, 2.1rem to 3.9rem */
 .display {
   font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  line-height: 1.14;
   color: var(--ink-900);
   text-wrap: balance;
+}
+
+.display-lg {
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.06;
+}
+
+.display-xl {
+  font-weight: 800;
+  letter-spacing: -0.038em;
+  line-height: 1.01;
 }
 
 .on-carbon .display {
@@ -165,7 +204,9 @@ body {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  /* Wider than a normal label. At 11px, generous letterspacing is what makes a
+     mono line read as an engraved plate rather than as small text. */
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   line-height: 1.4;
   color: var(--emission-700);
@@ -177,9 +218,14 @@ body {
 
 .figure {
   font-family: var(--font-mono);
+  /* Tabular so a column of readings stays in column, and so a counting stat
+     does not shuffle its own width as it animates. */
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
   color: var(--ink-900);
+  font-feature-settings:
+    'kern' 1,
+    'tnum' 1;
 }
 
 .on-carbon .figure {
@@ -191,9 +237,12 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* A lede is display copy, not body copy: tighter leading and a touch of
+   negative tracking, or it reads as an oversized paragraph. */
 .lede {
   font-size: 1.0625rem;
-  line-height: 1.65;
+  line-height: 1.55;
+  letter-spacing: -0.011em;
   color: var(--ink-600);
 }
 

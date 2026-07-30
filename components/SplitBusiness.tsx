@@ -29,7 +29,7 @@ export default function SplitBusiness() {
           >
             {business.kicker}
           </p>
-          <h3 className="display mt-4 text-[1.6rem] sm:text-[1.9rem]">
+          <h3 className="display display-lg mt-4 text-[1.6rem] sm:text-[1.9rem]">
             {business.title}
           </h3>
           <GradientRule width="w-14" className="mt-5" />

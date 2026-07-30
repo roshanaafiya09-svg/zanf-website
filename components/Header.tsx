@@ -4,19 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ChevronDown, Menu, Phone, X } from 'lucide-react'
+import Logo from './Logo'
 import { QuoteButton } from './Quote'
-import { contact, nav, site, type NavItem } from '@/content/site'
-
-function Wordmark() {
-  // TODO: replace with the client's logo as SVG. Until then the wordmark is
-  // set in Archivo rather than shipping a low-resolution PNG.
-  return (
-    <span className="font-display text-[1.35rem] font-bold tracking-[-0.04em] text-ink">
-      ZAN
-      <span className="text-[var(--emission-600)]">-</span>F
-    </span>
-  )
-}
+import { contact, nav, type NavItem } from '@/content/site'
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -78,9 +68,7 @@ export default function Header() {
       }`}
     >
       <div className="shell flex h-16 items-center justify-between gap-6 lg:h-[4.5rem]">
-        <Link href="/" aria-label={`${site.name} — home`} className="shrink-0">
-          <Wordmark />
-        </Link>
+        <Logo className="shrink-0" />
 
         <nav
           className="hidden items-center gap-1 lg:flex"

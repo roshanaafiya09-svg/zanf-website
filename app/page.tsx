@@ -182,7 +182,7 @@ export default function HomePage() {
                   <TriangleAlert size={14} strokeWidth={2} aria-hidden="true" />
                   Compliance
                 </p>
-                <h2 className="display mt-5 text-[1.7rem] sm:text-[2.1rem]">
+                <h2 className="display display-lg mt-5 text-[1.7rem] sm:text-[2.1rem]">
                   Read the notification, not somebody’s summary of it
                 </h2>
                 <p className="mt-5 max-w-xl text-[0.9375rem]">

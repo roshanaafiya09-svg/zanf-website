@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Archivo, IBM_Plex_Mono, Inter } from 'next/font/google'
+import { Host_Grotesk, IBM_Plex_Mono, Instrument_Sans } from 'next/font/google'
 import Header from '@/components/Header'
 import UtilityBar from '@/components/UtilityBar'
 import Footer from '@/components/Footer'
@@ -11,18 +11,37 @@ import { site } from '@/content/site'
 import { localBusinessSchema, organizationSchema } from '@/lib/seo'
 import './globals.css'
 
-/** Display: engineered and confident. Body: legible. Data: instrument label. */
-const archivo = Archivo({
+/**
+ * Three families, chosen for what each has to do.
+ *
+ * Host Grotesk — display. A tighter, sharper grotesk than Archivo, with less of
+ * the blocky evenness that makes heavy Archivo read as a template. Its narrower
+ * apertures and flat terminals hold together at 3.9rem, which is where the hero
+ * headline lives.
+ *
+ * Instrument Sans — body. Replaces Inter. Inter is the most-deployed UI face on
+ * the web; it is excellent and it is invisible, and "the same font as every SaaS
+ * dashboard" is not what a premium industrial site wants. Instrument Sans is
+ * slightly narrower with more character in the lowercase, and it sets denser
+ * technical paragraphs without losing legibility at 15px.
+ *
+ * IBM Plex Mono — data, unchanged. It is the strongest part of the existing
+ * system: the tabular figures and slab-ish terminals read as instrument
+ * silkscreen, which is the whole point of the mono-for-data rule.
+ */
+const hostGrotesk = Host_Grotesk({
   subsets: ['latin'],
-  weight: ['600', '700'],
-  variable: '--font-archivo',
+  weight: ['600', '700', '800'],
+  variable: '--font-display-family',
   display: 'swap',
 })
 
-const inter = Inter({
+const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
+  // 400 and 500 only — nothing sets the body face at 600, and an unused weight
+  // is a font file downloaded for nothing.
   weight: ['400', '500'],
-  variable: '--font-inter',
+  variable: '--font-sans-family',
   display: 'swap',
 })
 
@@ -69,7 +88,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-IN"
-      className={`${archivo.variable} ${inter.variable} ${plexMono.variable}`}
+      className={`${hostGrotesk.variable} ${instrumentSans.variable} ${plexMono.variable}`}
     >
       <head>
         <JsonLd data={[organizationSchema, localBusinessSchema]} />

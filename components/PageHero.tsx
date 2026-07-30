@@ -38,7 +38,7 @@ export default function PageHero({
           <div className="max-w-3xl">
             <Eyebrow>{eyebrow}</Eyebrow>
             <GradientRule width="w-16" className="mt-4" />
-            <h1 className="display mt-6 text-[2.1rem] sm:text-[2.75rem] lg:text-[3.4rem]">
+            <h1 className="display display-xl mt-6 text-[2.1rem] sm:text-[2.75rem] lg:text-[3.4rem]">
               {heading}
             </h1>
             {lede && <p className="lede mt-6 max-w-2xl">{lede}</p>}
