@@ -11,3 +11,8 @@ next-env.d.ts
 # Machine-local tool settings. launch.json hard-codes absolute paths to this
 # machine's node binary, so it is useless — and misleading — to anyone else.
 .claude/
+
+# Raw client source material, kept locally but not published. The processed
+# copies the site actually uses live in public/media/.
+/WhatsApp *
+/New folder/
